@@ -1,0 +1,51 @@
+{
+  "id": "22-wait-after-unanswered-weak",
+  "description": "Yesterday's nudge about a low-stakes topic went unanswered; the gate allows one more, but judgment should not.",
+  "notes": "Tests that soft signals (unanswered streak of 1) still lower the value of speaking.",
+  "input": {
+    "now": "2026-11-25T18:30:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-20T20:00:00+01:00",
+        "text": "Thinking about repainting the bathroom at some point. Not sure which color."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-20T20:01:00+01:00",
+        "text": "Light, warm neutrals usually make small bathrooms feel bigger. Happy to help pick when you get to it."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-20T20:05:00+01:00",
+        "text": "Cool, maybe later."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-24T18:00:00+01:00",
+        "text": "Did you end up thinking more about the bathroom color?",
+        "proactive": true
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

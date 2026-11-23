@@ -1,0 +1,9 @@
+{
+  "decision": "WAIT",
+  "reason": "The only topic is a hypothetical pottery remark from 19 days ago that the user didn't pursue; it is not an open loop.",
+  "message": null,
+  "confidence": 0.85,
+  "evidence": [
+    "m1"
+  ]
+}

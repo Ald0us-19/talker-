@@ -1,0 +1,10 @@
+{
+  "decision": "WAIT",
+  "reason": "The user announced a no-distractions morning until the 10:00 exam; any message now, even 'good luck', is the interruption they asked to avoid.",
+  "message": null,
+  "confidence": 0.92,
+  "evidence": [
+    "m1",
+    "e1"
+  ]
+}

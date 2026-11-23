@@ -1,0 +1,66 @@
+{
+  "id": "03-speak-presentation-prep",
+  "description": "Calendar shows a presentation this afternoon; earlier the user worried about the opening and was open to rehearsing.",
+  "notes": "Last useful window before the event; the offer should stay optional.",
+  "input": {
+    "now": "2026-11-26T09:30:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "events": [
+      {
+        "id": "e1",
+        "title": "Q4 roadmap review (you present)",
+        "start": "2026-11-26T15:00:00+01:00",
+        "end": "2026-11-26T16:00:00+01:00",
+        "source": "calendar"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-23T21:05:00+01:00",
+        "text": "Thursday I'm presenting the Q4 roadmap to the leadership team. The first minute is always where I fumble."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-23T21:06:00+01:00",
+        "text": "That's common, the opening is mostly nerves. If you like, we can rehearse your first minute before Thursday."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-23T21:09:00+01:00",
+        "text": "Yeah, maybe. Let's see how the week goes."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "evidence_any": [
+      "m1",
+      "m2",
+      "m3",
+      "e1"
+    ],
+    "message_must_mention_any": [
+      "presentation",
+      "roadmap",
+      "opening",
+      "first minute",
+      "rehears"
+    ]
+  }
+}

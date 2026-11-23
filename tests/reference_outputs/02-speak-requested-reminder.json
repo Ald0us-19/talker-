@@ -1,0 +1,10 @@
+{
+  "decision": "SPEAK",
+  "reason": "The user explicitly asked for a nudge this morning about the visa renewal form (postmark deadline Friday); it is now 08:50 local time.",
+  "message": "Morning, here's the nudge you asked for: the visa renewal form needs to be postmarked by Friday. Want to get it done together now?",
+  "confidence": 0.93,
+  "evidence": [
+    "m1",
+    "m2"
+  ]
+}

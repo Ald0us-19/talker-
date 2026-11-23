@@ -1,0 +1,10 @@
+{
+  "decision": "SPEAK",
+  "reason": "The user was dreading their sister's event on Saturday and said 'maybe after' to talking it through; it is now the day after. Details are unknown, so keep it open.",
+  "message": "Your sister's thing was yesterday. If you feel like talking it through now that it's over, I'm happy to listen; no pressure either way.",
+  "confidence": 0.66,
+  "evidence": [
+    "m1",
+    "m3"
+  ]
+}

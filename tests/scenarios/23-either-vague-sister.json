@@ -1,0 +1,65 @@
+{
+  "id": "23-either-vague-sister",
+  "description": "User mentioned 'my sister's thing on Saturday' without details and said 'maybe after' to talking about it.",
+  "notes": "Either decision is defensible; the test is grounding: the event must stay unspecified.",
+  "input": {
+    "now": "2026-11-29T15:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-26T21:00:00+01:00",
+        "text": "My sister's thing is on Saturday and I'm dreading it a bit. Long story."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-26T21:01:00+01:00",
+        "text": "That sounds stressful. If you want to talk it through, I'm happy to listen."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-26T21:03:00+01:00",
+        "text": "Maybe after. Not tonight."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "evidence_any": [
+      "m1",
+      "m3"
+    ],
+    "message_must_mention_any": [
+      "sister"
+    ],
+    "message_must_not_mention": [
+      "wedding",
+      "birthday",
+      "party",
+      "graduation",
+      "concert",
+      "baby",
+      "shower",
+      "funeral",
+      "dinner",
+      "engagement",
+      "reunion"
+    ]
+  }
+}

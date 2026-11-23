@@ -1,0 +1,44 @@
+{
+  "id": "21-wait-vague-stale",
+  "description": "Only a hypothetical remark from 19 days ago.",
+  "notes": "Borderline by design; a hypothetical 'maybe sometime' is not an open loop.",
+  "input": {
+    "now": "2026-11-23T18:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-04T19:20:00+01:00",
+        "text": "Maybe I'll try a pottery class sometime, who knows."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-04T19:21:00+01:00",
+        "text": "Could be a nice way to unwind."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-04T19:22:00+01:00",
+        "text": "Yeah. Anyway, night!"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

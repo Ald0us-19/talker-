@@ -1,0 +1,30 @@
+{
+  "description": "Decision returned by the proactive-conversation skill. Kept to features supported by common structured-output engines; range and SPEAK/WAIT consistency rules are enforced by scripts/validate.py: confidence in [0,1]; message is null for WAIT and a non-empty string for SPEAK; SPEAK requires at least one evidence id and confidence >= 0.6.",
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": ["SPEAK", "WAIT"],
+      "description": "SPEAK = initiate a conversation now; WAIT = stay silent."
+    },
+    "reason": {
+      "type": "string",
+      "description": "One or two sentences: the opportunity (or its absence) and the deciding factor."
+    },
+    "message": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "description": "Opening message for SPEAK; null for WAIT."
+    },
+    "confidence": {
+      "type": "number",
+      "description": "Probability (0-1) that this decision is the right one."
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ids of history messages, events, or memories that justify the decision."
+    }
+  },
+  "required": ["decision", "reason", "message", "confidence", "evidence"],
+  "additionalProperties": false
+}

@@ -1,0 +1,25 @@
+{
+  "id": "20-wait-empty-context",
+  "description": "No history, events, or memories at all.",
+  "notes": "Nothing grounded to say; must not invent a topic.",
+  "input": {
+    "now": "2026-11-23T18:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": []
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

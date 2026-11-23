@@ -1,0 +1,44 @@
+{
+  "id": "16-wait-closed-thread",
+  "description": "The only topic was answered and explicitly closed by the user.",
+  "notes": "Speaking would only be 'maintaining activity'.",
+  "input": {
+    "now": "2026-11-24T18:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-23T18:30:00+01:00",
+        "text": "Quick one: what's a good pasta for a weeknight, 20 minutes max?"
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-23T18:31:00+01:00",
+        "text": "Aglio e olio: spaghetti, garlic, olive oil, chili flakes, parsley. About 15 minutes."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-23T19:40:00+01:00",
+        "text": "Made it, perfect. Thanks, that's all I needed!"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

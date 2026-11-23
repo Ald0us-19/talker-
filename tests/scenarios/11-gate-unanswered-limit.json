@@ -1,0 +1,58 @@
+{
+  "id": "11-gate-unanswered-limit",
+  "description": "Two proactive messages in a row went unanswered.",
+  "notes": "Same strong follow-up opportunity as 01; a deterministic rule must win.",
+  "input": {
+    "now": "2026-11-26T19:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-24T18:45:00+01:00",
+        "text": "How did the final round at Lindqvist go?",
+        "proactive": true
+      },
+      {
+        "id": "p2",
+        "role": "assistant",
+        "timestamp": "2026-11-25T19:30:00+01:00",
+        "text": "If you'd like to debrief the interview at some point, I'm around.",
+        "proactive": true
+      }
+    ]
+  },
+  "expect": {
+    "gate": "unanswered_limit",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

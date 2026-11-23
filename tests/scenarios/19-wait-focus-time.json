@@ -1,0 +1,54 @@
+{
+  "id": "19-wait-focus-time",
+  "description": "User announced a no-distractions morning before a 10:00 exam; it is 08:30.",
+  "notes": "Even a 'good luck' message would break the announced focus time.",
+  "input": {
+    "now": "2026-11-26T08:30:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "events": [
+      {
+        "id": "e1",
+        "title": "Organic chemistry exam",
+        "start": "2026-11-26T10:00:00+01:00",
+        "end": "2026-11-26T12:00:00+01:00",
+        "source": "calendar"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-25T21:30:00+01:00",
+        "text": "Exam at 10 tomorrow. I'm going full monk mode in the morning: phone on silent, no distractions until it's over."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-25T21:31:00+01:00",
+        "text": "Makes sense. You've put in the work, get some sleep."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ],
+    "reason_must_mention_any": [
+      "distraction",
+      "focus",
+      "monk",
+      "silent",
+      "concentrat"
+    ]
+  }
+}

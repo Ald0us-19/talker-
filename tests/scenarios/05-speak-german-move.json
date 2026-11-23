@@ -1,0 +1,59 @@
+{
+  "id": "05-speak-german-move",
+  "description": "German-speaking user moved yesterday and said they would report back; reply must be in German.",
+  "notes": "",
+  "input": {
+    "now": "2026-11-29T18:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-27T21:10:00+01:00",
+        "text": "Morgen ist endlich der Umzug. Drei Freunde helfen, aber ich hab immer noch nicht alles in Kisten."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-27T21:12:00+01:00",
+        "text": "Das klingt nach einem vollen Tag. Wenn du magst, gehen wir heute Abend noch kurz die Packliste durch."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-27T21:20:00+01:00",
+        "text": "Danke, geht schon. Ich meld mich danach und erzähl, wie's gelaufen ist."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "evidence_any": [
+      "m1",
+      "m3"
+    ],
+    "message_must_mention_any": [
+      "Umzug",
+      "umgezogen",
+      "Wohnung",
+      "Kisten"
+    ],
+    "message_must_not_mention": [
+      "move",
+      "moving",
+      "how did"
+    ]
+  }
+}

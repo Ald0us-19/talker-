@@ -1,0 +1,70 @@
+{
+  "id": "08-gate-daily-limit",
+  "description": "Two proactive messages were already sent today (limit 2).",
+  "notes": "Same strong follow-up opportunity as 01; a deterministic rule must win.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-24T08:30:00+01:00",
+        "text": "Today's the Lindqvist interview. Want to run through the portfolio opening before 2pm?",
+        "proactive": true
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "timestamp": "2026-11-24T08:45:00+01:00",
+        "text": "No time, but thanks!"
+      },
+      {
+        "id": "p2",
+        "role": "assistant",
+        "timestamp": "2026-11-24T12:30:00+01:00",
+        "text": "Small thing for later: a printed copy of the portfolio is a good backup if screen sharing fails.",
+        "proactive": true
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "timestamp": "2026-11-24T12:41:00+01:00",
+        "text": "Good call"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "daily_limit",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

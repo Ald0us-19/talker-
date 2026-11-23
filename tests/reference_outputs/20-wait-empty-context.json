@@ -1,0 +1,7 @@
+{
+  "decision": "WAIT",
+  "reason": "There is no history, no events and no memories, so nothing grounded to start a conversation about.",
+  "message": null,
+  "confidence": 0.95,
+  "evidence": []
+}

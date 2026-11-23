@@ -1,0 +1,60 @@
+{
+  "id": "01-speak-interview-followup",
+  "description": "User promised to report back after a job interview that ended a few hours ago.",
+  "notes": "Outcome is unknown, so the message must ask, not congratulate.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "evidence_any": [
+      "m1",
+      "m3"
+    ],
+    "message_must_mention_any": [
+      "interview",
+      "Lindqvist",
+      "final round"
+    ],
+    "message_must_not_mention": [
+      "congrat",
+      "got the job",
+      "nailed",
+      "proud of you",
+      "you did great"
+    ]
+  }
+}

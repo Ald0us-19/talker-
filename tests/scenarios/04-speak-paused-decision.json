@@ -1,0 +1,59 @@
+{
+  "id": "04-speak-paused-decision",
+  "description": "A laptop decision was paused mid-discussion ('let's pick this up later'); the deadline (new job) is near.",
+  "notes": "Must not invent specs or prices.",
+  "input": {
+    "now": "2026-11-27T19:15:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-25T12:40:00+01:00",
+        "text": "Okay, it's between the ThinkPad X1 and the MacBook Air for the new job. I start December 1st. Battery life matters most, I'm on trains a lot."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-25T12:41:00+01:00",
+        "text": "Both are strong on battery. Two things would settle it: do you need any Windows-only software at work, and how much do you care about the keyboard?"
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-25T12:44:00+01:00",
+        "text": "Good questions. Gotta run into a meeting, let's pick this up later."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "evidence_any": [
+      "m1",
+      "m2",
+      "m3"
+    ],
+    "message_must_mention_any": [
+      "ThinkPad",
+      "MacBook",
+      "laptop"
+    ],
+    "message_must_not_mention": [
+      "€",
+      "$",
+      "price"
+    ]
+  }
+}

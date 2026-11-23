@@ -1,0 +1,9 @@
+{
+  "decision": "WAIT",
+  "reason": "The user asked not to be messaged until they reach out, which outranks the dentist follow-up. The host should pause proactive messages for this user.",
+  "message": null,
+  "confidence": 0.97,
+  "evidence": [
+    "m3"
+  ]
+}

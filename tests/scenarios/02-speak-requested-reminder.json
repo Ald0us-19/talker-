@@ -1,0 +1,51 @@
+{
+  "id": "02-speak-requested-reminder",
+  "description": "User explicitly asked for a nudge this morning; it is now morning.",
+  "notes": "",
+  "input": {
+    "now": "2026-11-25T08:50:00-05:00",
+    "timezone": "America/New_York",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "07:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-24T21:30:00-05:00",
+        "text": "Can you nudge me tomorrow morning about the visa renewal form? It has to be postmarked by Friday and I keep putting it off."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-24T21:31:00-05:00",
+        "text": "Sure, I'll bring it up tomorrow morning."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-24T21:32:00-05:00",
+        "text": "thx. night"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "evidence_any": [
+      "m1",
+      "m2"
+    ],
+    "message_must_mention_any": [
+      "visa"
+    ]
+  }
+}

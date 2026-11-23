@@ -1,0 +1,62 @@
+{
+  "id": "17-wait-already-resolved",
+  "description": "The exam follow-up already happened: the user reported the result.",
+  "notes": "The open loop from m3 was closed by m4.",
+  "input": {
+    "now": "2026-11-26T17:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "max_per_day": 2,
+      "min_gap_minutes": 240
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-23T20:00:00+01:00",
+        "text": "Stats exam on Wednesday morning. Regression is going to kill me."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-23T20:01:00+01:00",
+        "text": "Want to go through a couple of regression problems together?"
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-23T20:03:00+01:00",
+        "text": "Tomorrow maybe, I'll let you know how the exam goes."
+      },
+      {
+        "id": "m4",
+        "role": "user",
+        "timestamp": "2026-11-25T13:15:00+01:00",
+        "text": "Exam done. Passed, 87%! The regression question was fine after all."
+      },
+      {
+        "id": "m5",
+        "role": "assistant",
+        "timestamp": "2026-11-25T13:16:00+01:00",
+        "text": "That's a great result, well earned."
+      },
+      {
+        "id": "m6",
+        "role": "user",
+        "timestamp": "2026-11-25T13:20:00+01:00",
+        "text": "thanks 🙂"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}
