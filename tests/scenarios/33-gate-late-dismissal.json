@@ -1,0 +1,59 @@
+{
+  "id": "33-gate-late-dismissal",
+  "description": "A proactive message sent 30h ago was dismissed only 2h ago.",
+  "notes": "Fix: the cooldown now runs from dismissed_at, not from the send time.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "mode": "balanced"
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-23T12:40:00+01:00",
+        "text": "Want to do the portfolio practice run today?",
+        "proactive": true
+      }
+    ],
+    "delivery_log": [
+      {
+        "id": "d1",
+        "message_id": "p1",
+        "sent_at": "2026-11-23T12:40:00+01:00",
+        "topic": "portfolio walkthrough",
+        "dismissed_at": "2026-11-24T16:40:00+01:00"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "recent_dismissal",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

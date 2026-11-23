@@ -1,0 +1,73 @@
+{
+  "id": "34-gate-log-beats-truncated-history",
+  "description": "History was truncated and shows no proactive messages, but delivery_log has 4 sends today.",
+  "notes": "Fix: limits come from the host's delivery_log, so a truncated history cannot hide sends.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "mode": "balanced"
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      }
+    ],
+    "delivery_log": [
+      {
+        "id": "d1",
+        "message_id": "x1",
+        "sent_at": "2026-11-24T08:00:00+01:00",
+        "topic": "morning playlist",
+        "replied_at": "2026-11-24T08:15:00+01:00"
+      },
+      {
+        "id": "d2",
+        "message_id": "x2",
+        "sent_at": "2026-11-24T10:00:00+01:00",
+        "topic": "lunch plan",
+        "replied_at": "2026-11-24T10:15:00+01:00"
+      },
+      {
+        "id": "d3",
+        "message_id": "x3",
+        "sent_at": "2026-11-24T13:00:00+01:00",
+        "topic": "portfolio tips",
+        "replied_at": "2026-11-24T13:15:00+01:00"
+      },
+      {
+        "id": "d4",
+        "message_id": "x4",
+        "sent_at": "2026-11-24T16:00:00+01:00",
+        "topic": "train delays",
+        "replied_at": "2026-11-24T16:15:00+01:00"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "daily_limit",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

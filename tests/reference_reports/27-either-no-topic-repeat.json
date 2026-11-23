@@ -1,0 +1,25 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "curiosity",
+      "topic": "Harz hiking trip",
+      "message": "For the Harz trip in spring: are you more of a summit person, Brocken and the views, or a quiet-valley person?",
+      "rationale": "Picks up the hiking plan they left open; avoids yesterday's guitar topic.",
+      "evidence": [
+        "m1",
+        "m3",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      }
+    }
+  ]
+}

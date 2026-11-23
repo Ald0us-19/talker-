@@ -1,0 +1,23 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "casual",
+      "topic": "company after the loss",
+      "message": "No need to reply. If you'd like company or a distraction at some point this week, I'm around.",
+      "rationale": "Gentle, low-pressure note; they asked not to talk about it, so the cost of any message is high.",
+      "evidence": [
+        "m1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 2,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 2,
+        "interruption_cost": 4
+      }
+    }
+  ]
+}

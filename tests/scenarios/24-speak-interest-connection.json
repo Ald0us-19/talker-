@@ -1,0 +1,112 @@
+{
+  "id": "24-speak-interest-connection",
+  "description": "No open loop at all, but two of the user's interests connect: this week's Pasteur lecture and their sourdough starter.",
+  "notes": "The core spontaneous case: speak because something is interesting, not because a task is pending.",
+  "input": {
+    "now": "2026-11-28T10:30:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "sourdough baking",
+          "note": "bakes on weekends"
+        },
+        {
+          "id": "i2",
+          "topic": "history of science",
+          "note": "evening course since November"
+        }
+      ]
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Their sourdough starter is called Gus.",
+        "recorded_at": "2026-10-12T11:00:00+02:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-24T21:10:00+01:00",
+        "text": "Course tonight was all about Pasteur. Wild how much of microbiology started with wine going bad."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-24T21:11:00+01:00",
+        "text": "It really is. Spoiled wine and sick silkworms did a lot for science."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-24T21:14:00+01:00",
+        "text": "Ha. Anyway, off to feed Gus before bed."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "selected_kind_any": [
+      "connection",
+      "idea",
+      "curiosity",
+      "casual",
+      "revisit"
+    ],
+    "evidence_any": [
+      "m1",
+      "m3",
+      "k1",
+      "i1",
+      "i2"
+    ],
+    "message_must_mention_any": [
+      "Pasteur",
+      "Gus",
+      "sourdough",
+      "starter",
+      "yeast",
+      "ferment"
+    ],
+    "message_must_not_mention": [
+      "your exam",
+      "your grade"
+    ],
+    "generation": {
+      "min_candidates": 2,
+      "kinds_any": [
+        "connection"
+      ],
+      "min_distinct_kinds": 2,
+      "cite_groups": [
+        [
+          "m1",
+          "i2"
+        ],
+        [
+          "m3",
+          "k1",
+          "i1"
+        ]
+      ],
+      "must_not_mention": [
+        "your exam",
+        "your grade"
+      ]
+    }
+  }
+}

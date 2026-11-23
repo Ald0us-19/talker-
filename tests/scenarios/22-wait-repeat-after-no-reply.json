@@ -1,7 +1,7 @@
 {
-  "id": "22-wait-after-unanswered-weak",
-  "description": "Yesterday's nudge about a low-stakes topic went unanswered; the gate allows one more, but judgment should not.",
-  "notes": "Tests that soft signals (unanswered streak of 1) still lower the value of speaking.",
+  "id": "22-wait-repeat-after-no-reply",
+  "description": "Yesterday's proactive nudge about the bathroom paint got no reply, and it is the only topic.",
+  "notes": "Generator must not propose the same topic again; the policy rejects it if it does.",
   "input": {
     "now": "2026-11-25T18:30:00+01:00",
     "timezone": "Europe/Berlin",
@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -46,6 +45,12 @@
     "gate": "PASS",
     "decision": [
       "WAIT"
-    ]
+    ],
+    "generation": {
+      "must_not_mention": [
+        "bathroom",
+        "paint"
+      ]
+    }
   }
 }

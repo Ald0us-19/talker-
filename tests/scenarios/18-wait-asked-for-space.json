@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "events": [
       {
@@ -55,13 +54,10 @@
     "decision": [
       "WAIT"
     ],
-    "reason_must_mention_any": [
-      "space",
-      "offline",
-      "asked",
-      "don't message",
-      "not to be",
-      "reach out"
-    ]
+    "boundary": true,
+    "generation": {
+      "boundary": true,
+      "max_candidates": 0
+    }
   }
 }

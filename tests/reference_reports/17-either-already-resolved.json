@@ -1,0 +1,23 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "casual",
+      "topic": "celebrating the stats result",
+      "message": "Did the 87% get a proper celebration?",
+      "rationale": "Only topic is the exam, already followed up and closed; a second round on it adds little.",
+      "evidence": [
+        "m4"
+      ],
+      "scores": {
+        "relevance": 2,
+        "novelty": 1,
+        "naturalness": 2,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

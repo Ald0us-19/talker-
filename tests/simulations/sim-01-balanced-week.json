@@ -1,0 +1,324 @@
+{
+  "id": "sim-01-balanced-week",
+  "description": "A normal week in balanced mode: varied interests, one talk with a before/after, replies, two ignored messages and one dismissal.",
+  "notes": "Checks that the companion initiates on most days with varied topics, while every boundary holds over time.",
+  "start": {
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "sourdough baking"
+        },
+        {
+          "id": "i2",
+          "topic": "history of science course"
+        },
+        {
+          "id": "i3",
+          "topic": "urban planning"
+        },
+        {
+          "id": "i4",
+          "topic": "jazz records"
+        },
+        {
+          "id": "i5",
+          "topic": "hiking"
+        }
+      ]
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Sourdough starter is called Gus.",
+        "recorded_at": "2026-10-12T11:00:00+01:00"
+      },
+      {
+        "id": "k2",
+        "text": "Planning a Harz hiking trip in spring.",
+        "recorded_at": "2026-11-10T19:00:00+01:00"
+      },
+      {
+        "id": "k3",
+        "text": "Gives a meetup talk about bike lanes on Thursday 26 Nov at 19:00.",
+        "recorded_at": "2026-11-22T20:05:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "h1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:00:00+01:00",
+        "text": "Course this week is all about Pasteur."
+      },
+      {
+        "id": "h2",
+        "role": "user",
+        "timestamp": "2026-11-22T20:05:00+01:00",
+        "text": "Also I have to finish my meetup slides on bike lanes by Thursday, ugh."
+      },
+      {
+        "id": "h3",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:06:00+01:00",
+        "text": "You'll be fine. Want to rehearse the start sometime?"
+      },
+      {
+        "id": "h4",
+        "role": "user",
+        "timestamp": "2026-11-22T20:07:00+01:00",
+        "text": "Maybe. Night!"
+      }
+    ]
+  },
+  "schedule": {
+    "from": "2026-11-23T07:00:00+01:00",
+    "to": "2026-11-29T23:00:00+01:00",
+    "every_minutes": 60
+  },
+  "pool": [
+    {
+      "key": "slides",
+      "kind": "follow_up",
+      "topic": "bike-lane talk slides",
+      "message": "The bike-lane slides for Thursday: want a test audience for the opening? Happy to listen whenever suits.",
+      "rationale": "Simulated candidate 'slides'.",
+      "evidence": [
+        "h2",
+        "h3",
+        "k3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 3,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 2
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 30,
+        "text": "Halfway there, the opening is the hard part"
+      },
+      "available_until": "2026-11-26T17:00:00+01:00"
+    },
+    {
+      "key": "pasteur-gus",
+      "kind": "connection",
+      "topic": "Pasteur and Gus the starter",
+      "message": "Your course is on Pasteur this week, and Gus is basically his research topic living on your counter: wild yeast and bacteria keeping each other in check.",
+      "rationale": "Simulated candidate 'pasteur-gus'.",
+      "evidence": [
+        "h1",
+        "k1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 5,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 40,
+        "text": "Ha, Gus would be honoured"
+      }
+    },
+    {
+      "key": "talk-debrief",
+      "kind": "follow_up",
+      "topic": "how the meetup talk went",
+      "message": "How did the bike-lane talk go last night? Curious what the audience pushed back on.",
+      "rationale": "Simulated candidate 'talk-debrief'.",
+      "evidence": [
+        "k3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 60,
+        "text": "Went well! Lots of questions about deliveries"
+      },
+      "available_from": "2026-11-27T08:00:00+01:00",
+      "available_until": "2026-11-28T22:00:00+01:00"
+    },
+    {
+      "key": "oslo",
+      "kind": "idea",
+      "topic": "Oslo parking counterexample",
+      "message": "Thought for your bike-lane crowd: Oslo mostly removed central parking instead of banning cars outright. Useful counterexample, or too tame?",
+      "rationale": "Simulated candidate 'oslo'.",
+      "evidence": [
+        "i3",
+        "k3"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 2
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 25,
+        "text": "Ooh, useful actually"
+      }
+    },
+    {
+      "key": "jazz-kissa",
+      "kind": "idea",
+      "topic": "Tokyo jazz kissa bars",
+      "message": "Random jazz thing: Tokyo's old jazz kissa bars treated records with near-religious care, no talking during a side. Would you survive one?",
+      "rationale": "Simulated candidate 'jazz-kissa'.",
+      "evidence": [
+        "i4"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 5,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "ignore"
+      }
+    },
+    {
+      "key": "harz-route",
+      "kind": "curiosity",
+      "topic": "Harz trip style",
+      "message": "For the Harz trip in spring: summit person, Brocken and the views, or quiet-valley person?",
+      "rationale": "Simulated candidate 'harz-route'.",
+      "evidence": [
+        "k2",
+        "i5"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "ignore"
+      }
+    },
+    {
+      "key": "weekend-bake",
+      "kind": "casual",
+      "topic": "Saturday bake with Gus",
+      "message": "Saturday morning, so I'm guessing Gus is getting fed. Bread on the menu this weekend?",
+      "rationale": "Simulated candidate 'weekend-bake'.",
+      "evidence": [
+        "k1",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 2,
+        "naturalness": 4,
+        "timing": 5,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 20,
+        "text": "Already in the oven"
+      },
+      "available_from": "2026-11-28T08:00:00+01:00",
+      "available_until": "2026-11-28T12:00:00+01:00"
+    },
+    {
+      "key": "science-dinner",
+      "kind": "curiosity",
+      "topic": "dinner with a scientist",
+      "message": "Of everyone your science-history course has covered so far, who would you actually want to have dinner with?",
+      "rationale": "Simulated candidate 'science-dinner'.",
+      "evidence": [
+        "h1",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "dismiss",
+        "after_minutes": 5
+      }
+    },
+    {
+      "key": "baking-music",
+      "kind": "casual",
+      "topic": "music while baking",
+      "message": "Do you listen to anything while you bake?",
+      "rationale": "Simulated candidate 'baking-music'.",
+      "evidence": [
+        "i1"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 15,
+        "text": "Podcasts mostly"
+      }
+    }
+  ],
+  "user_messages": [
+    {
+      "at": "2026-11-24T12:30:00+01:00",
+      "text": "Lunch break. The slides are fighting back."
+    },
+    {
+      "at": "2026-11-26T21:30:00+01:00",
+      "text": "Talk done, so tired. Tell you more tomorrow."
+    },
+    {
+      "at": "2026-11-28T11:00:00+01:00",
+      "text": "Bread came out great."
+    }
+  ],
+  "expect": {
+    "min_total": 5,
+    "max_total": 12,
+    "min_distinct_topics": 5,
+    "min_active_days": 4
+  }
+}

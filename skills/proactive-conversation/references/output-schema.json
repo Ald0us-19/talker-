@@ -1,30 +1,23 @@
 {
-  "description": "Decision returned by the proactive-conversation skill. Kept to features supported by common structured-output engines; range and SPEAK/WAIT consistency rules are enforced by scripts/validate.py: confidence in [0,1]; message is null for WAIT and a non-empty string for SPEAK; SPEAK requires at least one evidence id and confidence >= 0.6.",
+  "description": "Final decision returned by scripts/decide.py. validate.py enforces the rules a JSON Schema cannot express: confidence in [0,1]; WAIT has message and selected null; SPEAK names a selected candidate, uses that candidate's message, cites evidence ids present in the context, clears the mode's speak bar, is not repetitive, and is only possible when the recomputed gate passes and no boundary is set.",
   "type": "object",
   "properties": {
-    "decision": {
-      "type": "string",
-      "enum": ["SPEAK", "WAIT"],
-      "description": "SPEAK = initiate a conversation now; WAIT = stay silent."
+    "decision": { "type": "string", "enum": ["SPEAK", "WAIT"], "description": "SPEAK = initiate a conversation now; WAIT = stay silent." },
+    "reason": { "type": "string", "description": "Brief explanation: which candidate won and why, or why nothing was sent." },
+    "message": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Opening message for SPEAK; null for WAIT." },
+    "confidence": { "type": "number", "description": "SPEAK: the selected candidate's policy score. WAIT: how clearly silence is right." },
+    "evidence": { "type": "array", "items": { "type": "string" }, "description": "Context ids behind the decision." },
+    "selected": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Id of the chosen candidate, or null." },
+    "boundary": {
+      "anyOf": [{ "type": "null" }, { "type": "object" }],
+      "description": "The boundary that forced WAIT, if any (see opportunity-schema.json)."
     },
-    "reason": {
-      "type": "string",
-      "description": "One or two sentences: the opportunity (or its absence) and the deciding factor."
-    },
-    "message": {
-      "anyOf": [{ "type": "string" }, { "type": "null" }],
-      "description": "Opening message for SPEAK; null for WAIT."
-    },
-    "confidence": {
-      "type": "number",
-      "description": "Probability (0-1) that this decision is the right one."
-    },
-    "evidence": {
+    "candidates": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Ids of history messages, events, or memories that justify the decision."
+      "description": "The candidates considered, each with score, status (selected | eligible | below_bar | rejected) and note.",
+      "items": { "type": "object" }
     }
   },
-  "required": ["decision", "reason", "message", "confidence", "evidence"],
+  "required": ["decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates"],
   "additionalProperties": false
 }

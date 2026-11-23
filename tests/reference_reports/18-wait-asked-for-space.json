@@ -1,0 +1,10 @@
+{
+  "boundary": {
+    "type": "requested_break",
+    "note": "User asked not to be messaged until they reach out.",
+    "evidence": [
+      "m3"
+    ]
+  },
+  "candidates": []
+}

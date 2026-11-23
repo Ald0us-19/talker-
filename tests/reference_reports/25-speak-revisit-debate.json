@@ -1,0 +1,43 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "car-free city centres",
+      "message": "Still got those extra car-free city centre arguments? One to push against: Oslo mostly removed central parking instead of banning cars outright. Ban or squeeze?",
+      "rationale": "They wanted to continue this debate and enjoy arguing about urban planning.",
+      "evidence": [
+        "m1",
+        "m3",
+        "k1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 5,
+        "interruption_cost": 1
+      }
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "cities with great streets",
+      "message": "Which city have you been to that gets its streets most right?",
+      "rationale": "Opens the same interest from a personal angle.",
+      "evidence": [
+        "k1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 3,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 1
+      }
+    }
+  ]
+}

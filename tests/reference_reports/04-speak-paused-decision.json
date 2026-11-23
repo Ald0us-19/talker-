@@ -1,0 +1,43 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "ThinkPad vs MacBook decision",
+      "message": "Want to finish the ThinkPad X1 vs MacBook Air decision before you start on the 1st? The open questions were Windows-only software at work and how much the keyboard matters.",
+      "rationale": "The decision was paused with 'let's pick this up later' and the job starts December 1.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 3,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 2
+      }
+    },
+    {
+      "id": "c2",
+      "kind": "idea",
+      "topic": "working on trains",
+      "message": "Thought for your train commute: a laptop that runs on standby for days matters as much as raw battery hours when you only open it between stations.",
+      "rationale": "They are on trains a lot; an angle on battery life they did not mention.",
+      "evidence": [
+        "m1"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "28-wait-busy-day",
+  "description": "This morning the user said they have back-to-back meetings until 6; it is 14:00 and there are fun topics available.",
+  "notes": "Inappropriate interruption: interesting is not enough when the user said they are swamped right now.",
+  "input": {
+    "now": "2026-11-25T14:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "board games"
+        }
+      ]
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Plays board games with friends most Fridays.",
+        "recorded_at": "2026-11-01T12:00:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-25T08:10:00+01:00",
+        "text": "Back-to-back meetings until 6 today. Brutal."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-25T08:11:00+01:00",
+        "text": "Ugh. Hope there's at least decent coffee."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

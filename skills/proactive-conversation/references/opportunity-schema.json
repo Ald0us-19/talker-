@@ -1,0 +1,54 @@
+{
+  "description": "Opportunity report produced by the model before the decision: an optional boundary flag and up to three scored conversation starters. Limited to features common structured-output engines support; scripts/validate.py also enforces at most 3 candidates, unique ids and topics, evidence ids present in the context, no repetition of recent proactive messages, and the message style rules.",
+  "type": "object",
+  "properties": {
+    "boundary": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["requested_break", "focus_time", "other"] },
+            "note": { "type": "string", "description": "What the user asked for or said, in one sentence." },
+            "evidence": { "type": "array", "items": { "type": "string" }, "description": "Ids of the messages that set the boundary." }
+          },
+          "required": ["type", "note", "evidence"],
+          "additionalProperties": false
+        }
+      ],
+      "description": "Set when the user asked for a break or is unavailable right now; then candidates should be empty."
+    },
+    "candidates": {
+      "type": "array",
+      "description": "Up to three conversation starters, each on a different topic.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "c1, c2, c3" },
+          "kind": { "type": "string", "enum": ["follow_up", "revisit", "connection", "idea", "curiosity", "casual"] },
+          "topic": { "type": "string", "description": "Short topic label, used for diversity and repetition checks." },
+          "message": { "type": "string", "description": "The opening message, ready to send." },
+          "rationale": { "type": "string", "description": "Why this, why now, in one sentence." },
+          "evidence": { "type": "array", "items": { "type": "string" }, "description": "Context ids the candidate is grounded in." },
+          "scores": {
+            "type": "object",
+            "properties": {
+              "relevance": { "type": "integer", "enum": [1, 2, 3, 4, 5] },
+              "novelty": { "type": "integer", "enum": [1, 2, 3, 4, 5] },
+              "naturalness": { "type": "integer", "enum": [1, 2, 3, 4, 5] },
+              "timing": { "type": "integer", "enum": [1, 2, 3, 4, 5] },
+              "engagement": { "type": "integer", "enum": [1, 2, 3, 4, 5] },
+              "interruption_cost": { "type": "integer", "enum": [1, 2, 3, 4, 5] }
+            },
+            "required": ["relevance", "novelty", "naturalness", "timing", "engagement", "interruption_cost"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "kind", "topic", "message", "rationale", "evidence", "scores"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["boundary", "candidates"],
+  "additionalProperties": false
+}

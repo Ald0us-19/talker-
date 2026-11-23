@@ -1,0 +1,24 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "visa renewal form",
+      "message": "Morning, here's the nudge you asked for: the visa renewal form needs to be postmarked by Friday. Want to get it done together now?",
+      "rationale": "They explicitly asked for this nudge this morning.",
+      "evidence": [
+        "m1",
+        "m2"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 3,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 4,
+        "interruption_cost": 1
+      }
+    }
+  ]
+}

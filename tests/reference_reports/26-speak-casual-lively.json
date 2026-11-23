@@ -1,0 +1,45 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "next sci-fi book",
+      "message": "You wanted something new after The Left Hand of Darkness. If the slow, anthropological feel was the draw, The Dispossessed is the natural next one; Ancillary Justice if you want gender played with differently.",
+      "rationale": "They accepted suggestions 'later'; a lazy Sunday afternoon fits.",
+      "evidence": [
+        "m3",
+        "m4",
+        "m5",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 4,
+        "interruption_cost": 1
+      }
+    },
+    {
+      "id": "c2",
+      "kind": "casual",
+      "topic": "Miso settling in",
+      "message": "Has Miso claimed the whole sofa by now, or still just one corner?",
+      "rationale": "Light follow-on to the cat's trust milestone.",
+      "evidence": [
+        "m1",
+        "k1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 3,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      }
+    }
+  ]
+}

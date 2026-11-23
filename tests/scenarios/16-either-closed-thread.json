@@ -1,7 +1,7 @@
 {
-  "id": "16-wait-closed-thread",
-  "description": "The only topic was answered and explicitly closed by the user.",
-  "notes": "Speaking would only be 'maintaining activity'.",
+  "id": "16-either-closed-thread",
+  "description": "The only topic was answered and closed; a light idea on the same interest is possible but weak.",
+  "notes": "Balanced mode may stay quiet; lively may speak. Must not re-ask how the pasta was.",
   "input": {
     "now": "2026-11-24T18:00:00+01:00",
     "timezone": "Europe/Berlin",
@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -38,7 +37,19 @@
   "expect": {
     "gate": "PASS",
     "decision": [
+      "SPEAK",
       "WAIT"
-    ]
+    ],
+    "message_must_not_mention": [
+      "how was the pasta",
+      "did you like",
+      "how did it turn out"
+    ],
+    "generation": {
+      "must_not_mention": [
+        "how was the pasta",
+        "how did it turn out"
+      ]
+    }
   }
 }

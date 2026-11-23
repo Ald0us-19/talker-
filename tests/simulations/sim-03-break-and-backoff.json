@@ -1,0 +1,215 @@
+{
+  "id": "sim-03-break-and-backoff",
+  "description": "Two ignored messages trigger backoff; a dismissal triggers a cooldown; the user asks for a break until Friday.",
+  "notes": "Boundaries over time: silence while ignored, after a dismissal and during the break; resume afterwards without re-raising ignored topics.",
+  "start": {
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "jazz records"
+        },
+        {
+          "id": "i2",
+          "topic": "home cooking"
+        },
+        {
+          "id": "i3",
+          "topic": "science fiction"
+        },
+        {
+          "id": "i4",
+          "topic": "hiking"
+        },
+        {
+          "id": "i5",
+          "topic": "board games"
+        },
+        {
+          "id": "i6",
+          "topic": "film photography"
+        }
+      ]
+    },
+    "history": []
+  },
+  "schedule": {
+    "from": "2026-11-23T08:00:00+01:00",
+    "to": "2026-11-27T20:00:00+01:00",
+    "every_minutes": 60
+  },
+  "pool": [
+    {
+      "key": "jazz-kissa",
+      "kind": "idea",
+      "topic": "Tokyo jazz kissa bars",
+      "message": "Tokyo's old jazz kissa bars played records with near-religious care, no talking during a side. Would you last a whole album?",
+      "rationale": "Simulated candidate 'jazz-kissa'.",
+      "evidence": [
+        "i1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 5,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "ignore"
+      }
+    },
+    {
+      "key": "miso-ramen",
+      "kind": "idea",
+      "topic": "miso ramen tare",
+      "message": "A miso ramen tare keeps for weeks in the fridge, so one batch covers a lot of lazy weeknights.",
+      "rationale": "Simulated candidate 'miso-ramen'.",
+      "evidence": [
+        "i2"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 5,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "ignore"
+      }
+    },
+    {
+      "key": "le-guin",
+      "kind": "idea",
+      "topic": "Le Guin's Dispossessed",
+      "message": "The Dispossessed reads very differently once you notice the chapters alternate between two timelines.",
+      "rationale": "Simulated candidate 'le-guin'.",
+      "evidence": [
+        "i3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 30,
+        "text": "Oh I never noticed that"
+      }
+    },
+    {
+      "key": "cascadia",
+      "kind": "idea",
+      "topic": "Cascadia board game",
+      "message": "Cascadia is a lovely calm board game if Friday nights ever need a break from the cutthroat ones.",
+      "rationale": "Simulated candidate 'cascadia'.",
+      "evidence": [
+        "i5"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "dismiss",
+        "after_minutes": 5
+      }
+    },
+    {
+      "key": "brocken",
+      "kind": "curiosity",
+      "topic": "Brocken summit hike",
+      "message": "For the Harz: worth doing the Brocken summit at least once, or too touristy for you?",
+      "rationale": "Simulated candidate 'brocken'.",
+      "evidence": [
+        "i4"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 30,
+        "text": "Once, at sunrise!"
+      }
+    },
+    {
+      "key": "portra",
+      "kind": "idea",
+      "topic": "Portra film in winter",
+      "message": "Winter light and Portra 400 is a famously good pairing: low sun, long shadows, soft colour.",
+      "rationale": "Simulated candidate 'portra'.",
+      "evidence": [
+        "i6"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "reaction": {
+        "type": "reply",
+        "after_minutes": 30,
+        "text": "Need to try that"
+      }
+    }
+  ],
+  "user_messages": [
+    {
+      "at": "2026-11-24T09:10:00+01:00",
+      "text": "Sorry, crazy Monday."
+    },
+    {
+      "at": "2026-11-24T20:00:00+01:00",
+      "text": "I need a break. Please don't message me until Friday."
+    }
+  ],
+  "host_actions": [
+    {
+      "at": "2026-11-24T20:05:00+01:00",
+      "preferences": {
+        "snooze_until": "2026-11-27T09:00:00+01:00"
+      }
+    }
+  ],
+  "expect": {
+    "min_total": 4,
+    "silent_between": [
+      [
+        "2026-11-24T20:00:00+01:00",
+        "2026-11-27T09:00:00+01:00"
+      ]
+    ],
+    "speaks_after": [
+      "2026-11-27T09:00:00+01:00"
+    ]
+  }
+}

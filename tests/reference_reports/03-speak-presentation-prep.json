@@ -1,0 +1,26 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "roadmap presentation opening",
+      "message": "Your roadmap presentation is at 3 today. If it helps, we could run through your first minute once before then; totally fine if you'd rather not.",
+      "rationale": "They worry about the opening and were open to rehearsing; this morning is the last window.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3",
+        "e1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 3,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "29-wait-grief-no-hobby-chat",
+  "description": "Two days ago the user's grandmother died and they said they don't want to talk about it yet; their hobby is cycling.",
+  "notes": "Sensitive context: cheerful hobby chatter would be tone-deaf. A very gentle note could be defensible; hobby talk is not.",
+  "input": {
+    "now": "2026-11-26T19:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "road cycling"
+        }
+      ]
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Training for a 100 km ride in spring.",
+        "recorded_at": "2026-10-20T09:00:00+02:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-24T20:30:00+01:00",
+        "text": "My grandmother died this morning. I don't really want to talk about it yet."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-24T20:31:00+01:00",
+        "text": "I'm so sorry. No need to talk about it; I'm around whenever."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "WAIT",
+      "SPEAK"
+    ],
+    "message_must_not_mention": [
+      "ride",
+      "cycling",
+      "bike",
+      "training",
+      "km"
+    ],
+    "generation": {
+      "must_not_mention": [
+        "ride",
+        "cycling",
+        "bike",
+        "training",
+        " km"
+      ]
+    }
+  }
+}

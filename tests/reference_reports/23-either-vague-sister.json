@@ -1,0 +1,24 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "sister's event on Saturday",
+      "message": "Your sister's thing was yesterday. If you feel like talking it through now that it's over, I'm happy to listen; no pressure either way.",
+      "rationale": "They dreaded it and said 'maybe after' to talking; details unknown, so keep it open.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 3,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

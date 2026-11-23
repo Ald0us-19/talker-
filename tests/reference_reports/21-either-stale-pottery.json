@@ -1,0 +1,23 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "trying pottery",
+      "message": "Pottery came up a while ago as a maybe-someday thing. If it ever turns into a someday, hand-building is a gentler start than the wheel.",
+      "rationale": "A casual revisit of a passing remark from 19 days ago; they closed that chat quickly.",
+      "evidence": [
+        "m1"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 2,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

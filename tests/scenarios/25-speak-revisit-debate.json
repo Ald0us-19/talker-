@@ -1,0 +1,80 @@
+{
+  "id": "25-speak-revisit-debate",
+  "description": "Three weeks ago the user enjoyed a debate about car-free city centres and said 'we should continue this sometime'.",
+  "notes": "Revisiting an old discussion with a fresh angle, not a generic 'remember when'.",
+  "input": {
+    "now": "2026-11-25T19:30:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Enjoys arguing about urban planning; lives in Berlin.",
+        "recorded_at": "2026-11-03T22:30:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-03T21:40:00+01:00",
+        "text": "Hot take: city centres should ban private cars completely."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-03T21:41:00+01:00",
+        "text": "Strong position. What about deliveries and people with limited mobility?"
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-03T21:50:00+01:00",
+        "text": "Exemptions, obviously. Okay I have more arguments but I need to sleep. We should continue this sometime."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "selected_kind_any": [
+      "revisit",
+      "idea",
+      "curiosity",
+      "connection"
+    ],
+    "evidence_any": [
+      "m1",
+      "m3",
+      "k1"
+    ],
+    "message_must_mention_any": [
+      "car",
+      "city",
+      "centre",
+      "center",
+      "street"
+    ],
+    "generation": {
+      "min_candidates": 1,
+      "kinds_any": [
+        "revisit"
+      ],
+      "cite_groups": [
+        [
+          "m1",
+          "m3"
+        ]
+      ]
+    }
+  }
+}

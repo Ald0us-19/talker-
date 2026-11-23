@@ -10,8 +10,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {

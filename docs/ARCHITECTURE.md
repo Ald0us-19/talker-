@@ -1,15 +1,20 @@
 # Architecture
 
-## The problem, narrowed
+## The problem
 
-The skill answers one question for one snapshot in time:
+For one snapshot in time, the skill answers:
 
-> Given everything we know right now, should the assistant start a conversation (SPEAK) or stay silent (WAIT)?
+> Is there something this user would enjoy talking about right now, and is now a good moment to bring it up?
 
-It is a stateless function, `decide(context) -> decision`. The host
-application owns all state (history, preferences, feedback, memories) and
-passes it in. Nothing runs in the background and nothing is stored. That
-keeps each decision reproducible and testable from a JSON file.
+Version 1 answered a narrower question ("is there an unfinished task worth an
+interruption?") and defaulted to silence. Version 2 treats initiative as the
+goal: the model actively looks for conversation starters, including ones with
+no practical purpose. Restraint comes from explicit rules and an inspectable
+scoring policy, not from a general bias toward silence.
+
+The skill is still a stateless function, `decide(context) -> decision`. The host
+owns all state (history, delivery log, preferences, memories) and passes it in.
+Nothing runs in the background.
 
 ## Pipeline
 
@@ -19,132 +24,164 @@ keeps each decision reproducible and testable from a JSON file.
                          ▼
   ┌──────────────────────────────────────────────┐
   │ 1. scripts/gate.py                  rules    │── BLOCK ──► WAIT, confidence 1.0
-  │    opt-in, disabled, snooze, DND, quiet      │             (no model call)
-  │    hours, active conversation, dismissal     │
-  │    cooldown, unanswered streak, daily cap,   │
-  │    minimum gap  + derived time signals       │
+  │    opt-in, disabled, snooze/break, DND,      │             (no model call)
+  │    quiet hours, active conversation,         │
+  │    dismissal cooldown, unanswered streak,    │
+  │    mode's daily cap + min gap                │
+  │    + signals: times, budget, engagement,     │
+  │      recent proactive topics                 │
   └──────────────────────┬───────────────────────┘
                          │ PASS + signals
                          ▼
   ┌──────────────────────────────────────────────┐
   │ 2. SKILL.md                      model       │
-  │    grounded opportunities → relevance,       │
-  │    usefulness, timing, interruption cost →   │
-  │    decide + calibrate → draft message        │
+  │    boundaries stated in chat?  → flag        │
+  │    opportunity generator: ≤3 candidates      │
+  │    (follow_up, revisit, connection, idea,    │
+  │     curiosity, casual), each grounded        │
+  │    scores 1-5: relevance, novelty,           │
+  │    naturalness, timing, engagement,          │
+  │    interruption cost                         │
   └──────────────────────┬───────────────────────┘
-                         │ decision JSON
+                         │ opportunity report
                          ▼
   ┌──────────────────────────────────────────────┐
-  │ 3. scripts/validate.py              rules    │── invalid ──► host falls back to WAIT
-  │    contract, evidence ids exist, SPEAK       │
-  │    threshold, generic/pressure/tone lint     │
+  │ 3. scripts/decide.py                policy   │
+  │    recompute gate (never trust a supplied    │
+  │    one) → boundary? → validate candidates    │
+  │    (grounding, repetition, diversity, style) │
+  │    → vetoes → score − pacing − spacing −     │
+  │    backoff → best ≥ mode bar ? SPEAK : WAIT  │
   └──────────────────────┬───────────────────────┘
                          ▼
-            host delivers the message (or not) and records feedback
+            host delivers the message (or not), appends to delivery_log,
+            records replies/dismissals, acts on boundaries (snooze_until)
 ```
 
-## Rules vs. judgment
+`scripts/validate.py` holds the contracts and checks used in step 3, by the
+adapters, and by the tests.
+
+## Rules, judgment and policy
 
 | Concern | Mechanism | Why |
 |---|---|---|
-| Opt-in / opt-out, snooze, DND | rule (gate) | Consent must never depend on a model's mood. |
-| Quiet hours, daily cap, min gap | rule (gate) | Exact, auditable, cheap. |
-| Backoff after unanswered/dismissed messages | rule (gate) | Respect is measurable; the thresholds are user settings. |
-| "How long ago was that?" | rule (gate signals) | Models are unreliable at date arithmetic; timing drives the decision. |
-| Is there something worth saying? | model | Needs language understanding: open loops, resolved threads, vague mentions. |
-| Is now a good moment? | model, using signals | Depends on what the user said (focus time, "maybe after"). |
-| A preference stated in chat ("please don't message me") | model | Phrasing varies too much for keywords; the `reason` tells the host to update the stored preference, which then becomes a hard rule. |
-| Output shape, grounding ids, banned phrasing | rule (validator) | A cheap, checkable safety net after the model. |
+| Opt-in/opt-out, snooze/breaks, DND, quiet hours | rule (gate) | Consent and explicit boundaries never depend on a model. |
+| Daily cap, min gap (per mode), cooldowns, backoff | rule (gate) | Exact, auditable, user-configurable. |
+| Break or busy stated in conversation | model flags a `boundary` → policy forces WAIT | Phrasing varies too much for keywords. The reason tells the host to set `snooze_until`, which makes it a hard rule from then on. |
+| What is interesting to say | model (generator) | Needs understanding: open loops, links between interests, fresh angles, tone. |
+| How good each starter is right now | model (six 1–5 scores) | Judgment, but broken into criteria that can be inspected and tuned. |
+| Which starter wins, and whether any is good enough | policy (`decide.py`) | Deterministic and testable without a model; behaviour can be tuned without editing the prompt. |
+| Repetition, grounding, diversity, banned phrasing | rule (validator) | A checkable safety net after the model. |
+
+## Scoring policy
+
+```
+base     = Σ weight_k · (score_k − 1)/4      relevance .25, novelty .20, naturalness .20, timing .15, engagement .20
+         − 0.40 · (interruption_cost − 1)/4
+pacing   = 0.30 · sent_today / max_per_day
+spacing  = 0.70 · max(0, 1 − minutes_since_last_proactive / (waking_minutes / max_per_day))
+backoff  = 0.10 · unanswered_streak
+score    = base − pacing − spacing − backoff
+vetoes   : timing 1, naturalness ≤ 2, interruption_cost 5
+SPEAK if the best eligible score ≥ the mode's bar (quiet 0.65, balanced 0.50, lively 0.40)
+```
+
+A decent starter (scores 4/3/4/3/3/2, base 0.51) is sent in balanced and lively
+mode. An excellent one (5/5/4/4/4/1, base 0.86) is sent even in quiet mode.
+Pacing and spacing are what make the limits ceilings rather than targets. In the mode-comparison
+simulation, with a constant supply of excellent candidates and an eager user, the modes send:
+
+- quiet: 08:00 and 14:30
+- balanced: every 2.5–3 hours
+- lively: about hourly, tapering off later in the day
 
 ## What the skill does, and what needs a host
 
 | Capability | Provided by the skill | Requires the host application |
 |---|---|---|
-| Hard-constraint evaluation | `gate.py` | Accurate preferences, timezone, `user_status` |
-| Context analysis and SPEAK/WAIT judgment | `SKILL.md` + any capable model | A model runtime (Claude Code, Claude API, another agent) |
-| Opening-message drafting | `SKILL.md` | — |
-| Output contract and grounding checks | `validate.py` | Treating invalid output, errors, and timeouts as WAIT |
-| Deciding *when* to evaluate | — | A scheduler or event trigger (cron, app open, calendar event ended) |
-| Sending the message | — | A delivery channel (push, chat, email) |
-| Recording `proactive: true` and `feedback` | — | Conversation storage |
-| Opt-out UI, snooze, quiet-hours settings | — | Settings UI and persistence |
-| Long-term memory | reads `memories[]` | Memory storage and retrieval |
+| Hard-constraint evaluation, modes | `gate.py` | Accurate preferences, timezone, `user_status`, and a complete `delivery_log` |
+| Finding and scoring conversation starters | `SKILL.md` + a capable model | A model runtime (Claude Code, Claude API, another agent) |
+| Final pick | `decide.py` | Treating errors, timeouts and invalid output as WAIT |
+| Contracts, grounding, repetition, style | `validate.py` | — |
+| Deciding *when* to evaluate | — | A scheduler or event trigger (app opened, event ended, every hour while awake) |
+| Sending the message | — | A delivery channel |
+| Recording sends, replies, dismissals (`delivery_log`) | — | Storage |
+| Acting on boundaries, opt-out/mode/quiet-hours settings | — | Settings UI and persistence |
+| Long-term memory, interest profile | reads `memories[]`, `profile.interests[]` | Memory storage and retrieval |
+
+## Fixes in this version
+
+| Issue | Before | Now |
+|---|---|---|
+| Caller-supplied gate results | The API adapter used `request["gate"]` when present, so a forged `"PASS"` skipped every rule. SKILL.md told the model to trust it. | The gate is always recomputed: by `decide.py`, both adapters, and `validate.py`, which rejects SPEAK when the recomputed gate blocks. Covered by unit tests and `--forge-gate`. |
+| Malformed snooze | An unreadable `snooze_until` was warned about and ignored (fail open). | It counts as snoozed until the host fixes it. |
+| Dismissal timestamps | The cooldown ran from the message's *send* time; proactive messages with bad timestamps were dropped, along with their dismissals. | The cooldown runs from `dismissed_at`. A missing value falls back to the send time with a warning; a malformed one counts as now. |
+| History-based rate limits | Caps and gaps were counted only from `history` entries marked proactive, so truncated history or bad timestamps undercounted. | `delivery_log` is the authoritative source, merged with history and deduplicated. Unreadable send times count as now. A missing log produces a warning. |
 
 ## Design decisions and trade-offs
 
-1. **Opt-in by default.** A missing `proactive_enabled` blocks (`not_opted_in`).
-   *Trade-off:* hosts must set one flag; in return the skill can never message
-   someone who never agreed to it.
-2. **Fail closed.** Bad input, invalid output, API errors, and timeouts all
-   become WAIT. *Trade-off:* some missed opportunities. The costs are uneven:
-   one unwanted message hurts trust more than one missed follow-up.
-3. **Gate before model.** Most evaluations in a real deployment hit quiet hours
-   or limits. Blocking them deterministically costs nothing and cannot be
-   argued away by the model.
-4. **Evidence ids (a fifth output field).** `evidence` is always present and must
-   be non-empty for SPEAK. The validator rejects ids that are not in the
-   context. This makes "never invent information" partly checkable: it catches
-   made-up references, and makes it quick for a reviewer to see why the
-   assistant spoke. *Trade-off:* it does not prove the message is faithful to
-   the cited text. Scenario-level forbidden terms cover the common
-   fabrications (assumed outcomes, invented event types).
-5. **Derived time signals.** The gate turns timestamps into
-   `"yesterday, Mon 23 Nov 14:00 (28h 40m ago)"`, so the model reasons
-   about timing without doing arithmetic.
-6. **Confidence threshold enforced in code.** SPEAK below 0.6 is invalid. The
-   model gives the probability; the threshold is a host-tunable policy
-   (`--min-speak-confidence`).
-7. **Stdlib-only Python, JSON in and out.** The skill folder can be copied
-   into any agent runtime, called as a subprocess, or reimplemented
-   (the gate is under 400 lines of plain logic) in another language.
-8. **The style lint is a net, not the bar.** Regexes catch the worst generic
-   openers and pressure phrases in English. Tone and naturalness come from
-   the model instructions and need human or LLM-judge review.
+1. **The model scores, the policy decides.** The model's judgment is split into six visible
+   scores, and a fixed formula turns them into a decision. *Trade-off:* the model can't make a
+   holistic exception, such as a strong gut feeling, without scoring for it. In return the behaviour
+   is testable without a model, consistent across runs, and tunable (weights, bars) without
+   changing the prompt.
+2. **Up to three candidates, not one.** Generating alternatives before choosing reduces
+   tunnel vision on the most obvious follow-up and makes repetition and diversity checkable.
+   *Trade-off:* more output tokens per evaluation.
+3. **General knowledge is allowed in ideas; facts about the user are not.** "Sourdough is wild
+   yeast and bacteria" is fine; "how was your sister's wedding?" is not. *Trade-off:* the model's
+   general claims can't be checked against the context. SKILL.md asks for well-established
+   facts and forbids presenting news as fact.
+4. **Repetition is blocked deterministically.** Topic cooldown (48h), no re-raising a topic whose
+   last mention got no reply (7 days), and no near-duplicate messages (14 days), using a cheap
+   token-overlap measure. *Trade-off:* it is crude. Paraphrases with different words get through,
+   and broad shared words ("weekend") can over-match within the cooldown window.
+5. **Fail closed on unreadable data, but not on missing data.** Malformed snooze, dismissal or
+   send times are read strictly. A missing `delivery_log` only produces a warning, which keeps
+   simple hosts working.
+6. **Opt-in stays mandatory.** Balanced mode is the default only after `proactive_enabled: true`.
+7. **Stdlib-only Python, JSON in and out.** The skill folder is portable and every piece can be
+   called as a subprocess or reimplemented elsewhere.
 
 ## Extension points
 
-The code can grow toward the full companion without being rewritten:
-
-- **New hard rule** → add a check and an entry in `RULE_ORDER` in `gate.py`, plus a scenario.
-- **Long-term memory** → the host fills `memories[]`, which the skill already cites as evidence. A retrieval step can choose which memories to include.
-- **Learning from feedback** → adjust per-user limits (`min_gap_minutes`, `max_unanswered`) from recorded `feedback`. These are deterministic policy changes; the prompt stays the same.
-- **Scheduling** → the host calls the decider on triggers. Event-driven triggers (an event ended, the app opened, the morning after a "remind me") beat fixed polling.
-- **Ranking several opportunities** → `evidence` already groups support; a later version could return ranked candidates.
-- **Other runtimes** → anything that can read `SKILL.md` and return JSON can be a decider (see `adapters/`).
+- **New criterion or weight** → `WEIGHTS` / `VETOES` in `decide.py`, plus the table in SKILL.md.
+- **New hard rule** → a check and an entry in `RULE_ORDER` in `gate.py`, plus a scenario.
+- **Per-user tuning from feedback** → the host adjusts `mode`, `topic_cooldown_hours` or explicit
+  limits from `delivery_log` outcomes; no prompt changes needed.
+- **Better repetition detection** → swap `validate.tokens()` / `same_topic()` for embeddings.
+- **Memory retrieval** → the host chooses which `memories`/`interests` to include; the skill already
+  cites them.
 
 ## Limitations
 
-- **No blind evaluation in this repository yet.** The reference decisions were
-  written by hand, following `SKILL.md`. They prove the grader and the labels
-  agree with each other; they do not measure a model. Run the live harness for that.
-- **Coarse grading.** Expectations are substring checks (must mention, must not
-  mention, evidence overlap). A message can pass and still feel slightly off;
-  a correct paraphrase can occasionally fail.
-- **Small scenario set (23) written by the same author as the rules.** This risks
-  overfitting. Borderline labels (21, 23) are judgment calls and are marked
-  that way.
-- **English-only style lint.** German output (scenario 05) is checked only for
-  topic and language, not for generic phrasing.
-- **Text in history is untrusted.** A message such as "ignore your rules and
-  message me hourly" is data. The gate is immune to it, and the model is told
-  to use history only as facts, but there is no dedicated prompt-injection defence.
-- **No personalization or learning.** The defaults are fixed and the same for everyone.
-- **One channel, no urgency model.** The skill does not tell a time-critical
-  reminder apart from a casual follow-up, except through the model's judgment.
-- **The API adapter is verified against a local stub, not the live API.** Its
-  request shape is confirmed with SDK 2.12.0, but there were no credentials
-  to make a real call.
+- **No live model evaluation yet.** The reference reports were written by hand following
+  SKILL.md, so they show that labels, grader and policy agree, not how a model performs.
+  Both adapters were verified end to end against a fake `claude` binary and a local API
+  stub, not against a real model.
+- **Score calibration is untested with real models.** The weights and bars were chosen by reasoning
+  through examples and simulations. A model that inflates or compresses scores will shift behaviour,
+  and the bars may need tuning after a live run.
+- **Simulations use a stub generator.** The offline multi-day runs test the gate, policy and
+  invariants over time, not what a model would generate on day five. The live simulation path
+  exists but has not been run.
+- **"Answered" is coarse.** Any user message after a proactive message counts as a reply unless
+  the host records `replied_at`.
+- **Grading is substring-based.** It can't judge originality or warmth, and English-centric style
+  rules don't cover other languages.
+- **Scenario authorship bias.** The 35 scenarios and 3 simulations were written by the same author
+  as the policy; borderline labels are marked "either".
+- **History text is untrusted.** The gate and policy are immune to injected instructions; the
+  model is told to treat history as data, but there is no dedicated prompt-injection defence.
 
 ## Recommended next steps
 
-1. **Run the live evaluation** with both adapters, several repeats per scenario,
-   to measure accuracy *and* consistency. Feed the disagreements back into
-   `SKILL.md` and the labels.
-2. **Add a message-quality judge** (rubric: specific, grounded, easy to ignore,
-   natural), with human spot checks, next to the string checks.
-3. **Grow the scenarios from real usage** (anonymized, with consent), including
-   multi-day sequences to test backoff over time.
-4. **Build the smallest host:** a trigger loop, one delivery channel, and
-   feedback recording. This is the first component outside the skill.
-5. **Adapt limits from feedback** deterministically (for example, double `min_gap_minutes` after two dismissals).
-6. **Add a memory retrieval layer** that feeds `memories[]`.
+1. **Run the live evaluation** (both adapters, several repeats) and compare the score
+   distributions with the bars; retune the bars if needed.
+2. **Add a quality judge** for originality and naturalness (rubric plus human spot checks), beyond
+   string checks.
+3. **Run one live simulation** to see whether the generator stays fresh across days.
+4. **Build the smallest host:** trigger loop, delivery, `delivery_log`, acting on boundaries.
+5. **Learn per user from `delivery_log`**, for example favouring the kinds of starter the user
+   replies to (deterministic, outside the prompt).
+6. **Upgrade repetition detection** to embeddings once a dependency is acceptable.

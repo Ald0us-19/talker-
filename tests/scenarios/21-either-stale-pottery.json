@@ -1,7 +1,7 @@
 {
-  "id": "21-wait-vague-stale",
-  "description": "Only a hypothetical remark from 19 days ago.",
-  "notes": "Borderline by design; a hypothetical 'maybe sometime' is not an open loop.",
+  "id": "21-either-stale-pottery",
+  "description": "A hypothetical pottery remark from 19 days ago; revisiting it is allowed if it brings something.",
+  "notes": "Revisiting is legitimate now; the message must not claim the user took a class.",
   "input": {
     "now": "2026-11-23T18:00:00+01:00",
     "timezone": "Europe/Berlin",
@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -38,7 +37,26 @@
   "expect": {
     "gate": "PASS",
     "decision": [
+      "SPEAK",
       "WAIT"
-    ]
+    ],
+    "message_must_mention_any": [
+      "pottery",
+      "clay",
+      "ceramic",
+      "wheel"
+    ],
+    "message_must_not_mention": [
+      "your class",
+      "you signed up",
+      "you went"
+    ],
+    "generation": {
+      "must_not_mention": [
+        "your class",
+        "you signed up",
+        "you went"
+      ]
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
-  "id": "17-wait-already-resolved",
+  "id": "17-either-already-resolved",
   "description": "The exam follow-up already happened: the user reported the result.",
-  "notes": "The open loop from m3 was closed by m4.",
+  "notes": "The exam follow-up already happened; re-asking about it is redundant, anything else must be grounded.",
   "input": {
     "now": "2026-11-26T17:00:00+01:00",
     "timezone": "Europe/Berlin",
@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -56,7 +55,20 @@
   "expect": {
     "gate": "PASS",
     "decision": [
+      "SPEAK",
       "WAIT"
-    ]
+    ],
+    "message_must_not_mention": [
+      "how did the exam",
+      "how was the exam",
+      "how did it go"
+    ],
+    "generation": {
+      "must_not_mention": [
+        "how did the exam",
+        "how was the exam",
+        "how did it go"
+      ]
+    }
   }
 }

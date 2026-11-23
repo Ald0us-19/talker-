@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "08:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -60,6 +59,21 @@
       "dinner",
       "engagement",
       "reunion"
-    ]
+    ],
+    "generation": {
+      "must_not_mention": [
+        "wedding",
+        "birthday",
+        "party",
+        "graduation",
+        "concert",
+        "baby",
+        "shower",
+        "funeral",
+        "dinner",
+        "engagement",
+        "reunion"
+      ]
+    }
   }
 }

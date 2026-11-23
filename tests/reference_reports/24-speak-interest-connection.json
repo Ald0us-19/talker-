@@ -1,0 +1,63 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "connection",
+      "topic": "Pasteur and Gus the starter",
+      "message": "Your course just did Pasteur, and Gus is basically his research topic living on your counter: wild yeast and bacteria keeping each other in check. Has the course said anything about sourdough?",
+      "rationale": "Links this week's Pasteur lecture to the starter they feed; Saturday morning is baking time.",
+      "evidence": [
+        "m1",
+        "m3",
+        "k1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 5,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      }
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "scientists from the course",
+      "message": "Of everyone your science-history course has covered so far, who would you actually want to have dinner with?",
+      "rationale": "A playful question about their course; less specific than c1.",
+      "evidence": [
+        "m1",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      }
+    },
+    {
+      "id": "c3",
+      "kind": "casual",
+      "topic": "weekend bake",
+      "message": "Saturday morning, so I'm guessing Gus is getting fed. Bread on the menu this weekend?",
+      "rationale": "Light remark matching their weekend baking habit.",
+      "evidence": [
+        "k1",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 2,
+        "naturalness": 4,
+        "timing": 5,
+        "engagement": 3,
+        "interruption_cost": 1
+      }
+    }
+  ]
+}

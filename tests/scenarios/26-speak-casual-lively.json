@@ -1,0 +1,84 @@
+{
+  "id": "26-speak-casual-lively",
+  "description": "Lively mode, Sunday afternoon: a pending book-suggestion offer and a new cat settling in; nothing urgent.",
+  "notes": "Casual and spontaneous starters; candidates should differ in topic and kind.",
+  "input": {
+    "now": "2026-11-29T15:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "lively",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "science fiction novels"
+        }
+      ]
+    },
+    "memories": [
+      {
+        "id": "k1",
+        "text": "Adopted a cat called Miso on 21 Nov.",
+        "recorded_at": "2026-11-21T18:00:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-23T20:00:00+01:00",
+        "text": "Miso finally slept on the sofa instead of under the bed!"
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-23T20:01:00+01:00",
+        "text": "That's a real trust milestone."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-26T21:00:00+01:00",
+        "text": "Finished The Left Hand of Darkness. Need something new to read."
+      },
+      {
+        "id": "m4",
+        "role": "assistant",
+        "timestamp": "2026-11-26T21:01:00+01:00",
+        "text": "Want a few suggestions?"
+      },
+      {
+        "id": "m5",
+        "role": "user",
+        "timestamp": "2026-11-26T21:03:00+01:00",
+        "text": "Later, too tired now."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK"
+    ],
+    "generation": {
+      "min_candidates": 2,
+      "min_distinct_kinds": 2,
+      "cite_groups": [
+        [
+          "m3",
+          "m4",
+          "m5",
+          "i1",
+          "m1",
+          "k1"
+        ]
+      ]
+    }
+  }
+}

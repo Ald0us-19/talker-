@@ -1,0 +1,10 @@
+{
+  "boundary": {
+    "type": "focus_time",
+    "note": "User has back-to-back meetings until 6pm today.",
+    "evidence": [
+      "m1"
+    ]
+  },
+  "candidates": []
+}

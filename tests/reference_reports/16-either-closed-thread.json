@@ -1,0 +1,24 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "idea",
+      "topic": "cacio e pepe",
+      "message": "If aglio e olio worked that well, cacio e pepe is the same 15-minute trick: pecorino, black pepper and starchy pasta water doing all the work.",
+      "rationale": "A light idea building on a dish they liked; no open thread, so the pull is modest.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

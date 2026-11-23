@@ -1,0 +1,24 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Umzug am Samstag",
+      "message": "Wie ist der Umzug gestern gelaufen? Hoffentlich sind am Ende alle Kisten mitgekommen.",
+      "rationale": "The move was yesterday and they said they'd report back; German like the user.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

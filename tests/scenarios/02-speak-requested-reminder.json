@@ -11,8 +11,7 @@
         "start": "22:00",
         "end": "07:00"
       },
-      "max_per_day": 2,
-      "min_gap_minutes": 240
+      "mode": "balanced"
     },
     "history": [
       {
@@ -46,6 +45,21 @@
     ],
     "message_must_mention_any": [
       "visa"
-    ]
+    ],
+    "selected_kind_any": [
+      "follow_up"
+    ],
+    "generation": {
+      "min_candidates": 1,
+      "kinds_any": [
+        "follow_up"
+      ],
+      "cite_groups": [
+        [
+          "m1",
+          "m2"
+        ]
+      ]
+    }
   }
 }

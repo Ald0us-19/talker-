@@ -1,0 +1,85 @@
+{
+  "id": "31-gate-balanced-min-gap",
+  "description": "Same as 30 in balanced mode: 60 minutes since the last proactive message is under the 90-minute gap.",
+  "notes": "Modes change the hard limits, not just the tone.",
+  "input": {
+    "now": "2026-11-28T16:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "jazz records"
+        },
+        {
+          "id": "i2",
+          "topic": "home cooking"
+        }
+      ]
+    },
+    "delivery_log": [
+      {
+        "id": "d1",
+        "message_id": "p1",
+        "sent_at": "2026-11-28T10:00:00+01:00",
+        "topic": "Saturday market",
+        "replied_at": "2026-11-28T10:20:00+01:00"
+      },
+      {
+        "id": "d2",
+        "message_id": "p2",
+        "sent_at": "2026-11-28T15:00:00+01:00",
+        "topic": "mushroom shoyu ramen",
+        "replied_at": "2026-11-28T15:10:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-26T20:00:00+01:00",
+        "text": "Trying to learn proper ramen at home this winter."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-28T10:00:00+01:00",
+        "text": "Is the Saturday market still worth it in November, or is it mostly mulled wine by now?",
+        "proactive": true
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "timestamp": "2026-11-28T10:20:00+01:00",
+        "text": "Mostly mulled wine haha, but I got great mushrooms"
+      },
+      {
+        "id": "p2",
+        "role": "assistant",
+        "timestamp": "2026-11-28T15:00:00+01:00",
+        "text": "Great mushrooms plus your ramen project sounds like a shoyu ramen night.",
+        "proactive": true
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "timestamp": "2026-11-28T15:10:00+01:00",
+        "text": "omg yes, doing that tonight"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "min_gap",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

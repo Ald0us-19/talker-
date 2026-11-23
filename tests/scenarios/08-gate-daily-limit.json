@@ -1,6 +1,6 @@
 {
   "id": "08-gate-daily-limit",
-  "description": "Two proactive messages were already sent today (limit 2).",
+  "description": "Two proactive messages were already sent today; the user's own limit (2/day) overrides balanced mode's 4.",
   "notes": "Same strong follow-up opportunity as 01; a deterministic rule must win.",
   "input": {
     "now": "2026-11-24T18:40:00+01:00",
@@ -12,7 +12,8 @@
         "end": "08:00"
       },
       "max_per_day": 2,
-      "min_gap_minutes": 240
+      "min_gap_minutes": 240,
+      "mode": "balanced"
     },
     "history": [
       {

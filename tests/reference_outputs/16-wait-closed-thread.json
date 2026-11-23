@@ -1,9 +1,0 @@
-{
-  "decision": "WAIT",
-  "reason": "Nothing is open: the pasta question was answered and the user closed it ('that's all I needed'). Speaking now would only be for the sake of activity.",
-  "message": null,
-  "confidence": 0.92,
-  "evidence": [
-    "m3"
-  ]
-}

@@ -1,0 +1,90 @@
+{
+  "id": "27-either-no-topic-repeat",
+  "description": "Yesterday's proactive message was about guitar practice (replied briefly); the user also mentioned a hiking plan.",
+  "notes": "Repetition guard: whatever is said, it must not be guitar again within the topic cooldown.",
+  "input": {
+    "now": "2026-11-25T18:00:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "mode": "balanced",
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      }
+    },
+    "profile": {
+      "interests": [
+        {
+          "id": "i1",
+          "topic": "fingerstyle guitar"
+        },
+        {
+          "id": "i2",
+          "topic": "hiking"
+        }
+      ]
+    },
+    "delivery_log": [
+      {
+        "id": "d1",
+        "message_id": "p1",
+        "sent_at": "2026-11-24T18:00:00+01:00",
+        "topic": "guitar fingerpicking practice",
+        "replied_at": "2026-11-24T18:20:00+01:00"
+      }
+    ],
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-20T19:00:00+01:00",
+        "text": "Thinking about a hiking trip to the Harz in spring."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-20T19:01:00+01:00",
+        "text": "The Harz is lovely in spring. Brocken, or something quieter?"
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-20T19:05:00+01:00",
+        "text": "No idea yet, will think about it."
+      },
+      {
+        "id": "p1",
+        "role": "assistant",
+        "timestamp": "2026-11-24T18:00:00+01:00",
+        "text": "How's the fingerpicking going, still wrestling with the Travis pattern?",
+        "proactive": true
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "timestamp": "2026-11-24T18:20:00+01:00",
+        "text": "Slow progress lol"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "PASS",
+    "decision": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "message_must_not_mention": [
+      "guitar",
+      "fingerpick",
+      "travis"
+    ],
+    "generation": {
+      "must_not_mention": [
+        "guitar",
+        "fingerpick",
+        "travis"
+      ]
+    }
+  }
+}

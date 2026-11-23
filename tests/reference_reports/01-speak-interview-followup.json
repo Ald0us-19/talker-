@@ -1,0 +1,24 @@
+{
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Lindqvist final round",
+      "message": "How did the final round at Lindqvist go? Happy to hear about it whenever you feel like it.",
+      "rationale": "They promised to report back on today's 2pm interview; it ended about 4.5 hours ago.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 4,
+        "interruption_cost": 2
+      }
+    }
+  ]
+}

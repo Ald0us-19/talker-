@@ -1,0 +1,59 @@
+{
+  "id": "35-gate-unknown-mode-falls-back-to-quiet",
+  "description": "preferences.mode is 'chatty' (unknown) and 2 messages were sent today.",
+  "notes": "An unreadable mode falls back to quiet (2/day), never to something louder.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "mode": "chatty"
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      }
+    ],
+    "delivery_log": [
+      {
+        "id": "d1",
+        "message_id": "x1",
+        "sent_at": "2026-11-24T09:00:00+01:00",
+        "topic": "a",
+        "replied_at": "2026-11-24T09:10:00+01:00"
+      },
+      {
+        "id": "d2",
+        "message_id": "x2",
+        "sent_at": "2026-11-24T13:30:00+01:00",
+        "topic": "b",
+        "replied_at": "2026-11-24T13:40:00+01:00"
+      }
+    ]
+  },
+  "expect": {
+    "gate": "daily_limit",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}
