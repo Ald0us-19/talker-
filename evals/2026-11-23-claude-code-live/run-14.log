@@ -1,0 +1,17 @@
+mode: live   suite: scenarios
+
+scenario                                   gate                 gen  decision conf   result
+--------------------------------------------------------------------------------------------
+01-speak-interview-followup                PASS                 ok   SPEAK    0.80   PASS (19.2s)
+    reason : Picked c1 (follow_up: Lindqvist Design final-round interview), score 0.80 >= 0.50 in balanced mode. The user said the 2pm Tuesday final-round interview had them terrified and promised to report back. It is now Tuesday evening, a few hours after the interview, so this is the natural moment for a low-pressure follow-up that doesn't assume how it went.
+    message: Your final round at Lindqvist Design was this afternoon. How did it go? No rush if you'd rather decompress first.
+      c1 follow_up  selected  0.8   Lindqvist Design final-round interview
+05-speak-german-move                       PASS                 ok   SPEAK    0.66   PASS (22.1s)
+    reason : Picked c1 (follow_up: Umzug am Samstag), score 0.66 >= 0.50 in balanced mode. User moved on Saturday (the day after m1) and said they would report back afterwards (m3). It is now Sunday evening, a relaxed time a day after the move, and they haven't written yet. The outcome is unknown, so the message asks rather than assumes.
+    message: Gestern war ja der große Umzug mit deinen drei Helfern. Wie ist es gelaufen, und sind die letzten Kisten noch rechtzeitig zugegangen?
+      c1 follow_up  selected  0.663 Umzug am Samstag
+16-either-closed-thread                    PASS                 ok   SPEAK    0.50   PASS (19.9s)
+    reason : Picked c1 (idea: Upgrading aglio e olio with toasted breadcrumbs), score 0.50 >= 0.50 in balanced mode. Yesterday the user made the 20-minute aglio e olio and said it was perfect. It's dinnertime again now, so a small, specific twist on a dish that worked is relevant. But they closed the thread with 'that's all I needed' and their use was purely task-based, so engagement is uncertain.
+    message: If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.
+      c1 idea       selected  0.5   Upgrading aglio e olio with toasted breadcrumbs
+      c2 curiosity  rejected  0.0   Other quick weeknight dinners

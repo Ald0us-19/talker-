@@ -1,0 +1,61 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (idea: Upgrading aglio e olio with toasted breadcrumbs), score 0.50 >= 0.50 in balanced mode. Yesterday the user made the 20-minute aglio e olio and said it was perfect. It's dinnertime again now, so a small, specific twist on a dish that worked is relevant. But they closed the thread with 'that's all I needed' and their use was purely task-based, so engagement is uncertain.",
+  "message": "If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.",
+  "confidence": 0.5,
+  "evidence": [
+    "m1",
+    "m2",
+    "m3"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "idea",
+      "topic": "Upgrading aglio e olio with toasted breadcrumbs",
+      "message": "If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.",
+      "rationale": "Yesterday the user made the 20-minute aglio e olio and said it was perfect. It's dinnertime again now, so a small, specific twist on a dish that worked is relevant. But they closed the thread with 'that's all I needed' and their use was purely task-based, so engagement is uncertain.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 4,
+        "engagement": 2,
+        "interruption_cost": 2
+      },
+      "score": 0.5,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "Other quick weeknight dinners",
+      "message": "Since the 15-minute aglio e olio went well: is there another dish you'd like cut down to weeknight speed, or do you mostly rotate a few favourites?",
+      "rationale": "The user cares about fast weeknight cooking (20 minutes max), and a question about their own routine fits that. They signalled the conversation was finished, though, so this could feel like an unprompted push.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 2,
+        "timing": 3,
+        "engagement": 2,
+        "interruption_cost": 2
+      },
+      "score": 0.0,
+      "status": "rejected",
+      "note": "would feel forced or artificial"
+    }
+  ],
+  "preference_update": null
+}

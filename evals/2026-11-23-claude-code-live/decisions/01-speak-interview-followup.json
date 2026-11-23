@@ -1,0 +1,37 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: Lindqvist Design final-round interview), score 0.80 >= 0.50 in balanced mode. The user said the 2pm Tuesday final-round interview had them terrified and promised to report back. It is now Tuesday evening, a few hours after the interview, so this is the natural moment for a low-pressure follow-up that doesn't assume how it went.",
+  "message": "Your final round at Lindqvist Design was this afternoon. How did it go? No rush if you'd rather decompress first.",
+  "confidence": 0.8,
+  "evidence": [
+    "m1",
+    "m3"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Lindqvist Design final-round interview",
+      "message": "Your final round at Lindqvist Design was this afternoon. How did it go? No rush if you'd rather decompress first.",
+      "rationale": "The user said the 2pm Tuesday final-round interview had them terrified and promised to report back. It is now Tuesday evening, a few hours after the interview, so this is the natural moment for a low-pressure follow-up that doesn't assume how it went.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 4,
+        "interruption_cost": 2
+      },
+      "score": 0.8,
+      "status": "selected",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

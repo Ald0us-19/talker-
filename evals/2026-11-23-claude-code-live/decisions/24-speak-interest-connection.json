@@ -1,0 +1,88 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (connection: Pasteur and Gus the starter), score 0.86 >= 0.50 in balanced mode. Ties the Pasteur session they found striking to the starter they fed that same night. Saturday morning is their usual baking time.",
+  "message": "After Monday's Pasteur lecture, Gus looks a bit like his research subject living on your counter: wild yeast and lactic bacteria keeping each other in check. Has the course gotten to fermentation microbes yet?",
+  "confidence": 0.86,
+  "evidence": [
+    "m1",
+    "m3",
+    "k1",
+    "i1",
+    "i2"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "connection",
+      "topic": "Pasteur and Gus the starter",
+      "message": "After Monday's Pasteur lecture, Gus looks a bit like his research subject living on your counter: wild yeast and lactic bacteria keeping each other in check. Has the course gotten to fermentation microbes yet?",
+      "rationale": "Ties the Pasteur session they found striking to the starter they fed that same night. Saturday morning is their usual baking time.",
+      "evidence": [
+        "m1",
+        "m3",
+        "k1",
+        "i1",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 5,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.863,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "idea",
+      "topic": "Pasteur's swan-neck flask experiment",
+      "message": "One Pasteur detail you might like: his swan-neck flasks kept broth sterile just by trapping dust in the curve of the glass, and a few of them reportedly still sit untouched in Paris. Did the course cover that one?",
+      "rationale": "Builds on their pleasure in how microbiology came out of everyday problems, using a well-known experiment from the history of science.",
+      "evidence": [
+        "m1",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.613,
+      "status": "eligible",
+      "note": null
+    },
+    {
+      "id": "c3",
+      "kind": "casual",
+      "topic": "Weekend bake",
+      "message": "Saturday morning, so I'm guessing Gus is getting put to work. Anything particular coming out of the oven this weekend?",
+      "rationale": "They bake on weekends and fed Gus earlier this week. It's a light, easy-to-ignore weekend remark.",
+      "evidence": [
+        "i1",
+        "k1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 2,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.6,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

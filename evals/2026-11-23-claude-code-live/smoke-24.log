@@ -1,0 +1,18 @@
+mode: live   suite: scenarios
+
+scenario                                   gate                 gen  decision conf   result
+--------------------------------------------------------------------------------------------
+24-speak-interest-connection               PASS                 ok   SPEAK    0.86   PASS (27.3s)
+    reason : Picked c1 (connection: Pasteur and Gus the starter), score 0.86 >= 0.50 in balanced mode. Ties the Pasteur session they found striking to the starter they fed that same night. Saturday morning is their usual baking time.
+    message: After Monday's Pasteur lecture, Gus looks a bit like his research subject living on your counter: wild yeast and lactic bacteria keeping each other in check. Has the course gotten to fermentation microbes yet?
+      c1 connection selected  0.863 Pasteur and Gus the starter
+      c2 idea       eligible  0.613 Pasteur's swan-neck flask experiment
+      c3 casual     eligible  0.6   Weekend bake
+--------------------------------------------------------------------------------------------
+gate rules correct            : 1/1
+candidate generation passed   : 1/1  (scenarios the gate lets through)
+final decision passed         : 1/1
+spoke when it should have waited : 0
+waited when it should have spoken: 0
+decisions saved to : evals/2026-11-23-claude-code-live/decisions
+

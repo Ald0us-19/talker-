@@ -1,0 +1,37 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: Umzug am Samstag), score 0.66 >= 0.50 in balanced mode. User moved on Saturday (the day after m1) and said they would report back afterwards (m3). It is now Sunday evening, a relaxed time a day after the move, and they haven't written yet. The outcome is unknown, so the message asks rather than assumes.",
+  "message": "Gestern war ja der große Umzug mit deinen drei Helfern. Wie ist es gelaufen, und sind die letzten Kisten noch rechtzeitig zugegangen?",
+  "confidence": 0.66,
+  "evidence": [
+    "m1",
+    "m3"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Umzug am Samstag",
+      "message": "Gestern war ja der große Umzug mit deinen drei Helfern. Wie ist es gelaufen, und sind die letzten Kisten noch rechtzeitig zugegangen?",
+      "rationale": "User moved on Saturday (the day after m1) and said they would report back afterwards (m3). It is now Sunday evening, a relaxed time a day after the move, and they haven't written yet. The outcome is unknown, so the message asks rather than assumes.",
+      "evidence": [
+        "m1",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.663,
+      "status": "selected",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}
