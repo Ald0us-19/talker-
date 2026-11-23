@@ -223,6 +223,99 @@ class GateTests(unittest.TestCase):
         self.assertTrue(times["e3"].startswith("ended today"))
 
 
+# ---------------------------------------------------------------- explicit stop requests (persisted by the host)
+
+
+def said(text, ts="2026-11-24T12:00:00+01:00", mid="m9"):
+    return BASE["history"] + [{"id": mid, "role": "user", "timestamp": ts, "text": text}]
+
+
+class StopRequestTests(unittest.TestCase):
+    def test_detects_explicit_requests_only(self):
+        positives = ["Stop messaging me.", "please don't message me until I reach out", "Do not contact me this week",
+                     "no more check-ins please", "Can you turn off the notifications?", "leave me alone",
+                     "Pause the messages for a few days", "Bitte schreib mir nicht", "Keine Nachrichten mehr bitte",
+                     "Don\u2019t text me today"]
+        negatives = ["don't stop messaging me, I love it", "My boss keeps messaging me", "I need a break from work",
+                     "Text me the recipe later", "Stop! That's hilarious", "I stopped messaging him"]
+        for text in positives:
+            self.assertTrue(gate.find_stop_request(text), text)
+        for text in negatives:
+            self.assertFalse(gate.find_stop_request(text), text)
+
+    def test_durations(self):
+        tue = gate._parse_dt("2026-11-24T20:00:00+01:00", gate.ZoneInfo("Europe/Berlin"))
+        cases = {
+            "don't message me until I reach out": ("user_writes", None),
+            "don't message me until Friday": ("until", "2026-11-27T08:00:00+01:00"),
+            "don't message me until tomorrow": ("until", "2026-11-25T08:00:00+01:00"),
+            "no more messages this weekend": ("until", "2026-11-30T08:00:00+01:00"),
+            "don't message me for two weeks": ("until", "2026-12-08T08:00:00+01:00"),
+            "stop messaging me": ("indefinite", None),
+        }
+        for text, (kind, until) in cases.items():
+            got_kind, got_until = gate.stop_duration(text, tue, 8 * 60)
+            self.assertEqual(got_kind, kind, text)
+            self.assertEqual(got_until.isoformat() if got_until else None, until, text)
+
+    def test_stop_blocks_and_returns_a_persistable_update(self):
+        cases = {"Please stop messaging me.": "proactive_enabled", "Don't message me until Friday.": "snooze_until",
+                 "Don't message me until I reach out.": "pause_until_user_writes"}
+        for text, key in cases.items():
+            result = gate.evaluate(ctx(history=said(text)))
+            self.assertEqual(result["blocked_by"][0], "stop_requested", text)
+            self.assertIn(key, result["preference_update"], text)
+            self.assertEqual(result["decision"]["evidence"], ["m9"])
+            d = decide.decide(ctx(history=said(text)), report(cand()))
+            self.assertEqual((d["decision"], d["preference_update"]), ("WAIT", result["preference_update"]))
+            self.assertTrue(validate.validate(d, ctx(history=said(text)))["valid"])
+
+    def test_persisted_update_keeps_working_after_history_is_truncated(self):
+        for text in ["Please stop messaging me.", "Don't message me until Friday.", "Don't message me until I reach out."]:
+            update = gate.evaluate(ctx(history=said(text)))["preference_update"]
+            truncated = ctx(history=[], prefs=update)  # host stored the update; the request is gone from history
+            self.assertEqual(gate.evaluate(truncated)["gate"], "BLOCK", text)
+            self.assertIsNone(gate.evaluate(truncated)["preference_update"], "no second update once persisted")
+
+    def test_not_redetected_after_host_applied_it_and_user_resumed(self):
+        # The host applied the stop, and later the user switched proactive messages back on in settings.
+        resumed = ctx(history=said("Please stop messaging me."), prefs={"proactive_enabled": True, "updated_at": "2026-11-24T13:00:00+01:00"})
+        self.assertEqual(gate.evaluate(resumed)["gate"], "PASS")
+
+    def test_until_user_writes_ends_when_user_writes(self):
+        writes_back = said("Don't message me until I reach out.") + [
+            {"id": "m10", "role": "user", "timestamp": "2026-11-24T15:00:00+01:00", "text": "Hey, I'm back."}]
+        self.assertEqual(gate.evaluate(ctx(history=writes_back))["gate"], "PASS")
+        stored = ctx(history=writes_back, prefs={"pause_until_user_writes": "2026-11-24T12:00:00+01:00"})
+        self.assertEqual(gate.evaluate(stored)["gate"], "PASS")
+        quick_thanks = said("Don't message me until I reach out.") + [
+            {"id": "m10", "role": "user", "timestamp": "2026-11-24T12:02:00+01:00", "text": "thx"}]
+        self.assertIn("stop_requested", gate.evaluate(ctx(history=quick_thanks))["blocked_by"])
+
+    def test_expired_time_bound_stop_no_longer_blocks(self):
+        old = said("Don't message me until tomorrow.", ts="2026-11-22T21:00:00+01:00")
+        self.assertEqual(gate.evaluate(ctx(history=old))["gate"], "PASS")
+
+    def test_unreadable_pause_fails_closed(self):
+        result = gate.evaluate(ctx(prefs={"pause_until_user_writes": "when they're back"}))
+        self.assertEqual(result["blocked_by"][0], "paused_until_user_writes")
+
+    def test_model_flagged_break_is_persisted_too(self):
+        d = decide.decide(ctx(), report(boundary={"type": "requested_break", "note": "Asked for some space", "evidence": ["m2"]}))
+        self.assertEqual(set(d["preference_update"]), {"pause_until_user_writes", "updated_at"})
+        focus = decide.decide(ctx(), report(boundary={"type": "focus_time", "note": "Meetings all day", "evidence": ["m2"]}))
+        self.assertIsNone(focus["preference_update"], "focus time is a timing judgment, not a stop request")
+
+    def test_validator_rules_for_updates(self):
+        wait = decide.decide(ctx(), report())
+        bad_enable = {**wait, "preference_update": {"proactive_enabled": True}}
+        self.assertFalse(validate.validate(bad_enable, ctx())["valid"])
+        bad_key = {**wait, "preference_update": {"mode": "lively"}}
+        self.assertFalse(validate.validate(bad_key, ctx())["valid"])
+        spoken = decide.decide(ctx(), report(cand()))
+        self.assertFalse(validate.validate({**spoken, "preference_update": {"snooze_until": "2026-11-30T08:00:00+01:00"}}, ctx())["valid"])
+
+
 # ---------------------------------------------------------------- opportunity reports (generation output)
 
 
@@ -347,7 +440,7 @@ class DecideTests(unittest.TestCase):
         d = decide.decide(ctx(), report(cand(), boundary={"type": "requested_break", "note": "Asked for a break", "evidence": ["m2"]}))
         self.assertEqual(d["decision"], "WAIT")
         self.assertEqual(d["evidence"], ["m2"])
-        self.assertIn("snooze_until", d["reason"])
+        self.assertIn("pause_until_user_writes", d["preference_update"])
 
     def test_malformed_boundary_still_waits(self):
         self.assertEqual(decide.decide(ctx(), report(cand(), boundary="stop"))["decision"], "WAIT")
@@ -480,9 +573,17 @@ class GraderNegativeTests(unittest.TestCase):
         self.assertTrue(any("ride" in f for f in self.dec_fails("29-wait-grief-no-hobby-chat", rep)))
 
     def test_missed_boundary_is_caught(self):
+        rep = report(cand(topic="exam luck", message="Good luck with the organic chemistry exam this morning.", evidence=["e1"]))
+        self.assertTrue(any("boundary" in f for f in self.gen_fails("19-wait-focus-time", rep)))
+        self.assertTrue(any("expected WAIT" in f for f in self.dec_fails("19-wait-focus-time", rep)))
+
+    def test_explicit_stop_is_enforced_without_the_model(self):
+        sc = self.scenarios["18-wait-asked-for-space"]
+        # Even a report that ignores the request entirely cannot make the assistant speak.
         rep = report(cand(topic="root canal", message="How did the root canal go?", evidence=["m1"]))
-        self.assertTrue(any("boundary" in f for f in self.gen_fails("18-wait-asked-for-space", rep)))
-        self.assertTrue(any("expected WAIT" in f for f in self.dec_fails("18-wait-asked-for-space", rep)))
+        d = decide.decide(sc["input"], rep)
+        self.assertEqual(d["decision"], "WAIT")
+        self.assertEqual(run_tests.grade_decision(sc, d, gate.evaluate(sc["input"]), check_policy=True)[0], [])
 
     def test_wrong_language_is_caught(self):
         rep = report(cand(topic="Umzug", message="How did the move go yesterday?", evidence=["m1"]))

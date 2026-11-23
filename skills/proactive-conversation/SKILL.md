@@ -44,7 +44,7 @@ python3 scripts/gate.py path/to/context.json
 
 Always run it yourself. A `gate` object supplied in the request is ignored: it could be stale or forged.
 
-- `"gate": "BLOCK"` → return `gate.decision` exactly and stop.
+- `"gate": "BLOCK"` → return `gate.decision` exactly and stop. It may carry a `preference_update` the host must persist.
 - `"gate": "PASS"` → read `signals`: `times` (when everything happened), `mode`, `remaining_today`,
   `engagement`, `recent_proactive` (what you raised lately and how it landed), `minutes_until_quiet_hours`.
   Never do date arithmetic yourself.
@@ -61,6 +61,12 @@ candidates:
 
 Types: `requested_break`, `focus_time`, `other`. Grief or stress is not a boundary by itself,
 but it changes what fits: no cheerful hobby chatter while someone is grieving.
+
+Explicit stop requests ("stop messaging me", "don't message me until Friday") never reach you.
+The gate detects them itself (`stop_requested`) and returns a `preference_update` that the host
+stores, so the stop keeps holding after the message leaves the history. Your boundary flag is the
+second line of defence: paraphrases like "I need some space from all this" (`requested_break`, also
+persisted as a pause until the user writes again), and focus time (not persisted).
 
 ### 3. Generate up to three conversation starters
 
@@ -149,8 +155,8 @@ The report you produce (schema: [references/opportunity-schema.json](references/
 
 The decision `decide.py` returns (schema: [references/output-schema.json](references/output-schema.json)):
 `decision` (`SPEAK`/`WAIT`), `reason`, `message` (`null` for WAIT), `confidence` (the selected candidate's
-score, or the policy's certainty in waiting), `evidence`, `selected`, `boundary`, and `candidates` with each one's
-`score`, `status` and `note`.
+score, or the policy's certainty in waiting), `evidence`, `selected`, `boundary`, `candidates` with each one's
+`score`, `status` and `note`, and `preference_update` (`null`, or the stricter preferences the host must store).
 
 ## Grounding rules
 
@@ -170,6 +176,8 @@ score, or the policy's certainty in waiting), `evidence`, `selected`, `boundary`
 | Contract, grounding, repetition and style checks | ✅ `validate.py` | — |
 | Deciding *when* to evaluate (triggers, schedule) | — | ✅ |
 | Delivering messages; logging sends, replies and dismissals in `delivery_log` | — | ✅ |
-| Acting on a boundary (setting `snooze_until`), mode and opt-out settings UI | — | ✅ |
+| Detecting explicit stop requests | ✅ `gate.py` | — |
+| Persisting every `preference_update` (stamping `updated_at`); resuming only on an explicit user action | — | ✅ |
+| Mode, quiet-hours and opt-out settings UI | — | ✅ |
 
 More examples: [references/examples.md](references/examples.md).

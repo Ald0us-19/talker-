@@ -11,7 +11,8 @@ Two contracts, both checked deterministically:
     - style: no generic openers, pressure, artificial enthusiasm; length and tone limits
 
   Decision (output of decide.py):
-    {"decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates"}
+    {"decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates",
+     "preference_update"}
     - SPEAK only when the recomputed gate passes (a caller-supplied gate is never trusted)
     - the message is the selected candidate's, its score clears the mode's bar,
       and it passes the grounding, repetition and style checks
@@ -39,7 +40,9 @@ from typing import Any, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gate  # noqa: E402
 
-REQUIRED = ("decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates")
+REQUIRED = ("decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates",
+            "preference_update")
+UPDATE_KEYS = ("proactive_enabled", "snooze_until", "pause_until_user_writes", "updated_at")
 KINDS = ("follow_up", "revisit", "connection", "idea", "curiosity", "casual")
 SCORE_KEYS = ("relevance", "novelty", "naturalness", "timing", "engagement", "interruption_cost")
 BOUNDARY_TYPES = ("requested_break", "focus_time", "other")
@@ -391,6 +394,22 @@ def validate(decision: Any, ctx: Optional[dict] = None, min_speak_confidence: Op
         unknown = [e for e in evidence if e not in ids]
         if unknown:
             errors.append(f"evidence ids not found in context (possible fabrication): {unknown}")
+
+    update = decision.get("preference_update")
+    if update is not None:
+        if not isinstance(update, dict) or not update:
+            errors.append("'preference_update' must be null or a non-empty object")
+        else:
+            unknown_keys = set(update) - set(UPDATE_KEYS)
+            if unknown_keys:
+                errors.append(f"preference_update may only set {list(UPDATE_KEYS)}; got {sorted(unknown_keys)}")
+            if "proactive_enabled" in update and update["proactive_enabled"] is not False:
+                errors.append("preference_update may only switch proactive messages off, never on")
+            for key in ("snooze_until", "pause_until_user_writes", "updated_at"):
+                if key in update and gate._parse_iso(update[key]) is None:
+                    errors.append(f"preference_update.{key} must be an ISO 8601 time")
+        if kind == "SPEAK":
+            errors.append("SPEAK cannot carry a preference_update (a stop or pause means WAIT)")
 
     cands = decision.get("candidates")
     if not isinstance(cands, list):

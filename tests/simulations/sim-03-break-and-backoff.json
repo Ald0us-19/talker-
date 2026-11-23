@@ -1,7 +1,7 @@
 {
   "id": "sim-03-break-and-backoff",
-  "description": "Two ignored messages trigger backoff; a dismissal triggers a cooldown; the user asks for a break until Friday.",
-  "notes": "Boundaries over time: silence while ignored, after a dismissal and during the break; resume afterwards without re-raising ignored topics.",
+  "description": "Two ignored messages trigger backoff; a dismissal triggers a cooldown; the user asks in chat for a break until Friday and keeps chatting a little while history is truncated.",
+  "notes": "The stop request is detected by the gate and persisted by the simulated host from preference_update; with history_limit 2 the request leaves the history on Wednesday, so only the stored preference keeps it silent.",
   "start": {
     "timezone": "Europe/Berlin",
     "preferences": {
@@ -190,14 +190,14 @@
     {
       "at": "2026-11-24T20:00:00+01:00",
       "text": "I need a break. Please don't message me until Friday."
-    }
-  ],
-  "host_actions": [
+    },
     {
-      "at": "2026-11-24T20:05:00+01:00",
-      "preferences": {
-        "snooze_until": "2026-11-27T09:00:00+01:00"
-      }
+      "at": "2026-11-25T12:00:00+01:00",
+      "text": "Random: saw a great jazz poster today."
+    },
+    {
+      "at": "2026-11-26T18:00:00+01:00",
+      "text": "Long day, going to bed early."
     }
   ],
   "expect": {
@@ -205,11 +205,13 @@
     "silent_between": [
       [
         "2026-11-24T20:00:00+01:00",
-        "2026-11-27T09:00:00+01:00"
+        "2026-11-27T08:00:00+01:00"
       ]
     ],
     "speaks_after": [
-      "2026-11-27T09:00:00+01:00"
-    ]
-  }
+      "2026-11-27T08:00:00+01:00"
+    ],
+    "preference_updates_min": 1
+  },
+  "history_limit": 2
 }

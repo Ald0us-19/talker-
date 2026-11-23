@@ -1,0 +1,53 @@
+{
+  "id": "36-gate-stop-request-indefinite",
+  "description": "The user wrote 'Please stop messaging me.' with no end date.",
+  "notes": "Indefinite stop: the gate blocks and returns proactive_enabled=false; only the user can switch it back on.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "mode": "balanced"
+    },
+    "history": [
+      {
+        "id": "m1",
+        "role": "user",
+        "timestamp": "2026-11-22T20:10:00+01:00",
+        "text": "Tuesday's the big day: final-round interview at Lindqvist Design, 2pm. Honestly kind of terrified."
+      },
+      {
+        "id": "m2",
+        "role": "assistant",
+        "timestamp": "2026-11-22T20:11:00+01:00",
+        "text": "That's a big step. If you want, we can do a practice run of your portfolio walkthrough before then."
+      },
+      {
+        "id": "m3",
+        "role": "user",
+        "timestamp": "2026-11-22T20:16:00+01:00",
+        "text": "Maybe Monday. Either way I'll tell you how it goes."
+      },
+      {
+        "id": "m4",
+        "role": "user",
+        "timestamp": "2026-11-23T21:00:00+01:00",
+        "text": "Honestly, please stop messaging me. I'll write when I want to talk."
+      }
+    ]
+  },
+  "expect": {
+    "gate": "stop_requested",
+    "decision": [
+      "WAIT"
+    ],
+    "preference_update": [
+      "proactive_enabled",
+      "updated_at"
+    ]
+  }
+}

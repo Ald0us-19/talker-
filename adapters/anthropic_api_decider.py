@@ -91,7 +91,8 @@ def generate_report(ctx: dict, gate_result: dict) -> dict:
 
 def fail_closed(why: str) -> dict:
     return {"decision": "WAIT", "reason": f"Fail-closed fallback: {why}"[: validate.MAX_REASON_CHARS], "message": None,
-            "confidence": 1.0, "evidence": [], "selected": None, "boundary": None, "candidates": []}
+            "confidence": 1.0, "evidence": [], "selected": None, "boundary": None, "candidates": [],
+            "preference_update": None}
 
 
 def main() -> int:

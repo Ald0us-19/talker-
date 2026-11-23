@@ -28,7 +28,8 @@ enforced in code before the model is involved.
 ```
 
 `decision`, `reason`, `message`, and `confidence` are the core contract. `evidence`,
-`selected`, `boundary`, and `candidates` make every decision traceable.
+`selected`, `boundary`, and `candidates` make every decision traceable. `preference_update`
+(normally `null`) carries a stop or pause the host must store.
 
 ## How it works
 
@@ -40,8 +41,10 @@ context ─► gate.py ─► model (SKILL.md) ─► decide.py ─► decision
 ```
 
 1. **Hard gate (`scripts/gate.py`, deterministic).** Explicit opt-in, opt-out, snooze/breaks,
-   Do Not Disturb, quiet hours, ongoing conversation, dismissal cooldown, unanswered streak,
-   and the mode's daily cap and minimum gap. A block is final. It also computes signals: time
+   explicit stop requests written in chat, Do Not Disturb, quiet hours, ongoing conversation,
+   dismissal cooldown, unanswered streak, and the mode's daily cap and minimum gap. A block is final.
+   A stop request comes back as a `preference_update` that the host must persist, so it keeps
+   holding after the message leaves the history. It also computes signals: time
    since every message, remaining budget, engagement, and what was raised recently.
 2. **Opportunity generator (the model, `SKILL.md`).** Flags boundaries stated in conversation
    ("please don't message me until Friday"), then proposes up to three diverse, grounded
@@ -89,8 +92,8 @@ Design rationale, the skill/host split, limitations and next steps:
 │   ├── claude_code_decider.sh          via `claude -p` (Claude Code headless)
 │   └── anthropic_api_decider.py        standalone app on the Claude API (needs `pip install anthropic`)
 ├── tests/
-│   ├── scenarios/                      35 single-snapshot scenarios
-│   ├── reference_reports/              hand-written opportunity reports for the 20 gate-passing scenarios
+│   ├── scenarios/                      38 single-snapshot scenarios
+│   ├── reference_reports/              hand-written opportunity reports for the 19 gate-passing scenarios
 │   ├── simulations/                    3 multi-day simulations (a week, mode comparison, break + backoff)
 │   ├── run_tests.py                    harness: scenarios + simulations (offline, live, or saved outputs)
 │   ├── simulate.py                     multi-day replay engine + independent invariants
@@ -137,7 +140,7 @@ python3 $S/validate.py tests/reference_reports/24-speak-interest-connection.json
 #    fixed candidate sets, grader negatives, simulation invariants
 python3 -m unittest discover -s tests -v
 
-# 2. Everything offline: 35 scenarios (generation and decision graded separately) + 3 simulations
+# 2. Everything offline: 38 scenarios (generation and decision graded separately) + 3 simulations
 python3 tests/run_tests.py -v
 
 # 3. Live evaluation of a model (paid: uses Claude Code usage or API credits)

@@ -45,6 +45,8 @@ and unreadable values are interpreted in the stricter direction.
 | `preferences.mode` | `quiet` / `balanced` / `lively` | `balanced` | Proactivity preset (table below). Unknown value → `quiet`, with a warning. |
 | `preferences.quiet_hours` | `{start, end}` "HH:MM" or `null` | `22:00`–`08:00` | Window may cross midnight. `null` = no quiet hours. |
 | `preferences.snooze_until` | ISO 8601 or `null` | `null` | A pause or break the user asked for. Unreadable value → treated as snoozed. |
+| `preferences.pause_until_user_writes` | ISO 8601 or `null` | `null` | Set from a stop request like "until I reach out": paused until a user message at least 30 min after this time. Unreadable → paused. |
+| `preferences.updated_at` | ISO 8601 or `null` | `null` | When the host last applied a `preference_update` or the user changed settings. Stop requests older than this are considered handled. |
 | `preferences.max_per_day` | int | from mode | User's own cap; overrides the mode preset. `0` blocks all. |
 | `preferences.min_gap_minutes` | int | from mode | User's own minimum gap; overrides the mode preset. |
 | `preferences.max_unanswered` | int | `2` | Proactive messages in a row without any user message before the gate waits for the user. `0` disables. |
@@ -84,6 +86,26 @@ penalties, so messages spread across the waking day.
 - A proactive message counts as answered if it has a valid `replied_at`, or if any
   user message in `history` came after it.
 
+## Explicit stop requests
+
+The gate scans user messages newer than `preferences.updated_at` for explicit requests to stop or
+pause proactive contact. It matches phrases such as "stop messaging me", "don't message/text/contact me",
+"no more check-ins", "turn off the notifications", "leave me alone", and German equivalents like
+"schreib mir nicht" or "keine Nachrichten mehr". Negations such as "don't stop messaging me" don't count.
+A match blocks with `stop_requested` and returns a `preference_update`:
+
+| The user asked… | `preference_update` |
+|---|---|
+| "…until I reach out / until I'm back" | `pause_until_user_writes: <time of the request>` |
+| "…until Friday / tomorrow / next week / this weekend / for two days / today" | `snooze_until: <that day, end of quiet hours>` |
+| no end given ("stop messaging me") | `proactive_enabled: false` |
+
+Every update also sets `updated_at`. **The host must merge it into its stored preferences.** From
+then on the stored preference enforces the stop even after the message has left the history.
+Resuming early is never inferred from text: the user turns messages back on (and the host stamps
+`updated_at`), or a time-bound pause ends. A `requested_break` boundary flagged by the model for
+paraphrased requests produces `pause_until_user_writes` the same way.
+
 ## Gate rules (in priority order)
 
 | Rule id | Blocks when |
@@ -91,6 +113,8 @@ penalties, so messages spread across the waking day.
 | `invalid_input` | `now` missing/invalid, unknown timezone, context not an object |
 | `not_opted_in` | `proactive_enabled` missing |
 | `disabled` | `proactive_enabled` is not `true` |
+| `stop_requested` | a user message newer than `updated_at` explicitly asks to stop proactive contact, and the requested pause is still running |
+| `paused_until_user_writes` | `pause_until_user_writes` is set (or unreadable) and the user hasn't written since |
 | `snoozed` | `now` < `snooze_until`, or `snooze_until` unreadable |
 | `do_not_disturb` | `user_status.do_not_disturb` is `true` |
 | `quiet_hours` | local time inside the quiet window |

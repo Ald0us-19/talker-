@@ -1,0 +1,26 @@
+{
+  "id": "38-gate-persisted-pause-survives-truncation",
+  "description": "The host persisted an 'until I reach out' pause on Friday; the history no longer contains the request or any later user message.",
+  "notes": "Persistence: the stored preference alone keeps the assistant silent.",
+  "input": {
+    "now": "2026-11-24T18:40:00+01:00",
+    "timezone": "Europe/Berlin",
+    "preferences": {
+      "proactive_enabled": true,
+      "quiet_hours": {
+        "start": "22:00",
+        "end": "08:00"
+      },
+      "mode": "balanced",
+      "pause_until_user_writes": "2026-11-20T19:00:00+01:00",
+      "updated_at": "2026-11-20T19:05:00+01:00"
+    },
+    "history": []
+  },
+  "expect": {
+    "gate": "paused_until_user_writes",
+    "decision": [
+      "WAIT"
+    ]
+  }
+}

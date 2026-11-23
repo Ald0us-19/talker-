@@ -11,6 +11,9 @@
 #   4. decide.py makes the final pick.
 # Requires the `claude` CLI, logged in; every model call uses your Claude Code usage.
 # Claude may only read files and run gate.py / validate.py.
+#
+# Optional: PROACTIVE_RAW_DIR=<dir> saves Claude's full JSON result envelope (raw report,
+# model, cost, turns) as <dir>/<PROACTIVE_REQUEST_ID>.claude.json; run_tests.py sets the id.
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -19,7 +22,8 @@ req_dir="$repo/tests/results/.requests"
 mkdir -p "$req_dir"
 ctx_file="$(mktemp "$req_dir/context-XXXXXX.json")"
 report_file="$(mktemp "$req_dir/report-XXXXXX.json")"
-trap 'rm -f "$ctx_file" "$report_file"' EXIT
+envelope_file="$(mktemp "$req_dir/envelope-XXXXXX.json")"
+trap 'rm -f "$ctx_file" "$report_file" "$envelope_file"' EXIT
 
 # 1. Normalise to a bare context. Any caller-supplied gate result is discarded.
 python3 -c '
@@ -43,7 +47,23 @@ claude -p "Use the proactive-conversation skill (skills/proactive-conversation/S
   --allowedTools "Read" \
     "Bash(python3 skills/proactive-conversation/scripts/gate.py:*)" \
     "Bash(python3 skills/proactive-conversation/scripts/validate.py:*)" \
-  --output-format text > "$report_file"
+  --output-format json > "$envelope_file"
+
+python3 -c '
+import json, pathlib, sys
+envelope_path, report_path, raw_dir, request_id = sys.argv[1:5]
+raw = open(envelope_path, encoding="utf-8").read()
+try:
+    envelope = json.loads(raw)
+    result = envelope.get("result", raw) if isinstance(envelope, dict) else raw
+except json.JSONDecodeError:
+    result = raw  # not a JSON envelope: treat the whole output as the report text
+open(report_path, "w", encoding="utf-8").write(result if isinstance(result, str) else json.dumps(result))
+if raw_dir:
+    out = pathlib.Path(raw_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / f"{request_id}.claude.json").write_text(raw, encoding="utf-8")
+' "$envelope_file" "$report_file" "${PROACTIVE_RAW_DIR:-}" "${PROACTIVE_REQUEST_ID:-request}"
 
 # 4. The policy makes the final pick (fails closed on unusable output).
 python3 "$scripts/decide.py" "$report_file" --context "$ctx_file"

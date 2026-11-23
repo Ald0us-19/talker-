@@ -7,6 +7,9 @@ into the final SPEAK/WAIT decision, with a fixed, inspectable policy:
   1. Recompute the hard gate from the context. A gate result supplied by the
      caller is never trusted. BLOCK -> WAIT.
   2. A boundary flagged by the generator (break request, focus time) -> WAIT.
+     A requested break also returns a preference_update for the host to persist
+     (pause until the user writes again), so it does not depend on the model
+     noticing the request again next time.
   3. Reject candidates that fail validation: ungrounded, repetitive, same topic
      as another candidate, or bad style.
   4. Veto candidates with hopeless timing, forced naturalness, or maximal
@@ -79,7 +82,7 @@ def penalties(signals: dict) -> dict:
 
 
 def _decision(kind: str, reason: str, confidence: float, *, message=None, evidence=None,
-              selected=None, boundary=None, candidates=None) -> dict:
+              selected=None, boundary=None, candidates=None, preference_update=None) -> dict:
     reason = reason if len(reason) <= validate.MAX_REASON_CHARS else reason[: validate.MAX_REASON_CHARS - 1] + "…"
     return {
         "decision": kind,
@@ -90,6 +93,7 @@ def _decision(kind: str, reason: str, confidence: float, *, message=None, eviden
         "selected": selected,
         "boundary": boundary,
         "candidates": candidates or [],
+        "preference_update": preference_update,
     }
 
 
@@ -98,7 +102,8 @@ def decide(ctx: Any, report: Any) -> dict:
     g = gate.evaluate(ctx)  # always recomputed; never taken from the caller
     if g["gate"] == "BLOCK":
         d = g["decision"]
-        return _decision("WAIT", d["reason"], d["confidence"])
+        return _decision("WAIT", d["reason"], d["confidence"], evidence=d["evidence"],
+                         preference_update=d["preference_update"])
     signals = g["signals"]
     mode, bar = signals["mode"], signals["speak_bar"]
 
@@ -111,12 +116,17 @@ def decide(ctx: Any, report: Any) -> dict:
         if validate.check_boundary(boundary, validate.context_ids(ctx)):
             boundary = {"type": "other", "note": "malformed boundary flag", "evidence": []}
         note = str(boundary.get("note", "")).strip().rstrip(".")
+        update = None
+        if boundary.get("type") == "requested_break":
+            update = {"pause_until_user_writes": signals["now"], "updated_at": signals["now"]}
+            note += ". Paused until the user writes again; the host must persist preference_update"
         return _decision(
             "WAIT",
-            f"Boundary ({boundary.get('type')}): {note}. The host should pause proactive messages (snooze_until).",
+            f"Boundary ({boundary.get('type')}): {note}.",
             0.95,
             evidence=[e for e in boundary.get("evidence", []) if isinstance(e, str)],
             boundary=boundary,
+            preference_update=update,
         )
 
     if not isinstance(report.get("candidates"), list):

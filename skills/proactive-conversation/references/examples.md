@@ -1,7 +1,7 @@
 # Worked examples
 
 Each example shows the context, the opportunity report the model produces, and
-what `decide.py` makes of it. The full suite (35 scenarios, 3 multi-day
+what `decide.py` makes of it. The full suite (38 scenarios, 3 multi-day
 simulations) lives in the repository's `tests/`.
 
 ## 1. SPEAK without any task: a connection between two interests
@@ -69,9 +69,10 @@ Harz hiking plan.
 
 ## 5. WAIT: boundaries and bad moments
 
-- **Break request** (`m3`: "please don't message me until I reach out"): the report has
-  `boundary: {"type": "requested_break", ...}` and no candidates. Result: WAIT with
-  confidence 0.95, and the reason tells the host to set `snooze_until`.
+- **Explicit break request** (`m3`: "please don't message me until I reach out"): the gate
+  blocks with `stop_requested` before the model is asked anything, and returns
+  `preference_update: {"pause_until_user_writes": "<time of m3>", "updated_at": "..."}`. Once the
+  host stores it, the pause holds even after `m3` has left the history.
 - **Busy day** ("Back-to-back meetings until 6 today"): `focus_time` boundary. The
   interesting board-game topic waits for another day.
 - **Grief:** no hobby chatter. A very gentle "I'm around" note scores interruption cost 4,

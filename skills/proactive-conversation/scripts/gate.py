@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timedelta, timezone, tzinfo
 from typing import Any, Optional
@@ -58,11 +59,40 @@ DEFAULTS = {
 RECENT_DAYS = 14  # how far back recent proactive messages are summarised
 RECENT_MAX = 20  # ...and at most this many of them
 
+# Explicit requests to stop proactive contact, matched deterministically in user
+# messages newer than preferences.updated_at. A match blocks immediately and the
+# gate returns a preference_update for the host to persist, so the stop keeps
+# holding after the message leaves the history. Paraphrases are left to the
+# model's boundary flag (a second line of defence, also persisted).
+STOP_PATTERNS = [
+    r"\b(?:please\s+)?(?:don'?t|do\s+not|stop|quit)\s+(?:messag\w*|text\w*|ping\w*|contact\w*|notify\w*|bother\w*|writ\w*\s+to)\s+me\b",
+    r"\b(?:stop|quit|no\s+more)\s+(?:the\s+|your\s+)?(?:proactive\s+)?(?:messages|notifications|check-?ins|texts|reminders)\b",
+    r"\b(?:turn|switch|shut)\s+off\s+(?:the\s+|your\s+)?(?:proactive\s+)?(?:messages|notifications|check-?ins)\b",
+    r"\bpause\s+(?:the\s+|your\s+)?(?:messages|notifications|check-?ins)\b",
+    r"\bleave\s+me\s+alone\b",
+    r"\b(?:schreib|schick|meld)\w*\s+(?:mir|dich)\s+(?:bitte\s+)?(?:nicht|keine|nichts)\b",
+    r"\bkeine\s+nachrichten\s+mehr\b",
+    r"\blass\s+mich\s+in\s+ruhe\b",
+]
+NEGATIONS = re.compile(r"(?:don'?t|do not|never|nicht)\s+$")
+UNTIL_USER = re.compile(
+    r"\buntil\s+i\s+(?:reach\s+out|message\s+you|text\s+you|write(?:\s+to\s+you)?|get\s+back(?:\s+to\s+you)?|say\s+so"
+    r"|(?:am|'m)\s+(?:back|ready)|come\s+back|contact\s+you)\b|\bbis\s+ich\s+(?:mich\s+(?:wieder\s+)?melde|wieder\s+schreibe)\b")
+WEEKDAYS = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3, "friday": 4, "saturday": 5, "sunday": 6,
+            "montag": 0, "dienstag": 1, "mittwoch": 2, "donnerstag": 3, "freitag": 4, "samstag": 5, "sonntag": 6}
+UNTIL_WEEKDAY = re.compile(r"\b(?:until|till|til|bis)\s+(?:next\s+)?(" + "|".join(WEEKDAYS) + r")\b")
+NUMBERS = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
+           "a few": 3, "a couple of": 2, "a couple": 2}
+FOR_PERIOD = re.compile(r"\bfor\s+(a\s+couple\s+of|a\s+couple|a\s+few|an?|one|two|three|four|five|six|seven|\d+)\s+(day|days|week|weeks)\b")
+USER_RELEASE_MINUTES = 30  # a user message this long after an "until I reach out" request ends it
+
 # Order matters: the first rule that fires is reported as the main reason.
 RULE_ORDER = [
     "invalid_input",
     "not_opted_in",
     "disabled",
+    "stop_requested",
+    "paused_until_user_writes",
     "snoozed",
     "do_not_disturb",
     "quiet_hours",
@@ -225,24 +255,68 @@ def _proactive_records(history: list, log: list, tz: tzinfo, now: datetime, warn
     return sorted(records.values(), key=lambda r: r["sent_at"])
 
 
-def _wait(reason: str) -> dict:
+def _wait(reason: str, preference_update: Optional[dict] = None, evidence: Optional[list] = None) -> dict:
     """A final decision in the full output contract (see references/output-schema.json)."""
-    return {"decision": "WAIT", "reason": reason, "message": None, "confidence": 1.0, "evidence": [],
-            "selected": None, "boundary": None, "candidates": []}
+    return {"decision": "WAIT", "reason": reason, "message": None, "confidence": 1.0, "evidence": evidence or [],
+            "selected": None, "boundary": None, "candidates": [], "preference_update": preference_update}
 
 
-def _result(blocks: list, signals: dict, warnings: list) -> dict:
+def _result(blocks: list, signals: dict, warnings: list, stop: Optional[dict] = None) -> dict:
     blocks.sort(key=lambda b: RULE_ORDER.index(b[0]))
+    update = stop["preference_update"] if stop else None
     if blocks:
         rule, reason = blocks[0]
+        evidence = [stop["message_id"]] if stop else []
         return {
             "gate": "BLOCK",
             "blocked_by": [b[0] for b in blocks],
-            "decision": _wait(f"Hard rule '{rule}': {reason}"),
+            "decision": _wait(f"Hard rule '{rule}': {reason}", update, evidence),
+            "preference_update": update,
             "signals": signals,
             "warnings": warnings,
         }
-    return {"gate": "PASS", "blocked_by": [], "decision": None, "signals": signals, "warnings": warnings}
+    return {"gate": "PASS", "blocked_by": [], "decision": None, "preference_update": None,
+            "signals": signals, "warnings": warnings}
+
+
+def find_stop_request(text: Any) -> bool:
+    """True if the text explicitly asks the assistant to stop (or pause) proactive contact."""
+    if not isinstance(text, str):
+        return False
+    low = text.lower().replace("\u2019", "'")
+    for pattern in STOP_PATTERNS:
+        for m in re.finditer(pattern, low):
+            if not NEGATIONS.search(low[max(0, m.start() - 12) : m.start()]):
+                return True
+    return False
+
+
+def stop_duration(text: str, said_at: datetime, resume_minute: int) -> tuple:
+    """How long a stop request lasts: ("user_writes", None) | ("until", datetime) | ("indefinite", None)."""
+    low = text.lower().replace("\u2019", "'")
+
+    def resume_on(day) -> datetime:
+        return datetime(day.year, day.month, day.day, resume_minute // 60, resume_minute % 60, tzinfo=said_at.tzinfo)
+
+    if UNTIL_USER.search(low):
+        return "user_writes", None
+    m = UNTIL_WEEKDAY.search(low)
+    if m:
+        ahead = (WEEKDAYS[m.group(1)] - said_at.weekday()) % 7 or 7
+        return "until", resume_on(said_at.date() + timedelta(days=ahead))
+    if re.search(r"\b(?:until|till|bis)\s+(?:tomorrow|morgen)\b", low):
+        return "until", resume_on(said_at.date() + timedelta(days=1))
+    if re.search(r"\b(?:until|till)\s+next\s+week\b|\b(?:this|the|over\s+the)\s+weekend\b|\bam\s+wochenende\b", low):
+        return "until", resume_on(said_at.date() + timedelta(days=(7 - said_at.weekday()) or 7))
+    m = FOR_PERIOD.search(low)
+    if m:
+        word = re.sub(r"\s+", " ", m.group(1))
+        n = int(word) if word.isdigit() else NUMBERS.get(word, 1)
+        days = n * (7 if m.group(2).startswith("week") else 1)
+        return "until", resume_on(said_at.date() + timedelta(days=days))
+    if re.search(r"\b(?:today|tonight|heute)\b", low):
+        return "until", resume_on(said_at.date() + timedelta(days=1))
+    return "indefinite", None
 
 
 # ---------------------------------------------------------------- main logic
@@ -289,6 +363,7 @@ def evaluate(ctx: Any) -> dict:
     now = raw_now.replace(tzinfo=tz) if raw_now.tzinfo is None else raw_now.astimezone(tz)
     minute_of_day = now.hour * 60 + now.minute
     signals["local_time"] = now.strftime("%a %d %b %Y %H:%M") + (f" ({tz_name})" if tz_name else "")
+    signals["now"] = now.isoformat()
 
     # --- preferences -----------------------------------------------------
     prefs = ctx.get("preferences")
@@ -322,6 +397,7 @@ def evaluate(ctx: Any) -> dict:
     signals["quiet_hours"] = None
     signals["minutes_until_quiet_hours"] = None
     signals["waking_minutes"] = 1440
+    resume_minute = 8 * 60  # when a time-bound stop request ends, if there are no quiet hours
     if quiet is not None:
         start = _parse_hhmm(quiet.get("start")) if isinstance(quiet, dict) else None
         end = _parse_hhmm(quiet.get("end")) if isinstance(quiet, dict) else None
@@ -335,6 +411,7 @@ def evaluate(ctx: Any) -> dict:
             label = f"{quiet['start']}-{quiet['end']}"
             signals["quiet_hours"] = label
             signals["waking_minutes"] = 1440 - (end - start) % 1440
+            resume_minute = end
             if _in_window(minute_of_day, start, end):
                 blocks.append(("quiet_hours", f"quiet hours ({label}) are in effect; local time is {now.strftime('%H:%M')}."))
             else:
@@ -397,6 +474,48 @@ def evaluate(ctx: Any) -> dict:
         blocks.append(
             ("conversation_active", f"the last message was {_minutes(now - last_any)} min ago; this is an ongoing conversation, not an initiation.")
         )
+
+    # --- explicit stop requests and the persisted pause ----------------
+    def user_wrote_after(t: datetime) -> bool:
+        return any(m[0] >= t + timedelta(minutes=USER_RELEASE_MINUTES) for m in user_msgs)
+
+    stop = None
+    updated_raw = prefs.get("updated_at")
+    updated_at = _parse_dt(updated_raw, tz) if updated_raw is not None else None
+    if updated_raw is not None and updated_at is None:
+        warnings.append("preferences.updated_at is unreadable; scanning all history for stop requests.")
+    for ts, mid, msg in reversed(user_msgs):
+        if updated_at is not None and ts <= updated_at:
+            break
+        if not find_stop_request(msg.get("text")):
+            continue
+        kind, until = stop_duration(msg["text"], ts, resume_minute)
+        if kind == "user_writes" and user_wrote_after(ts):
+            break  # the user has already reached out again
+        if kind == "until" and now >= until:
+            break  # the requested pause is over
+        update = {"updated_at": now.isoformat()}
+        if kind == "user_writes":
+            update["pause_until_user_writes"] = ts.isoformat()
+            lasts = "until the user writes again"
+        elif kind == "until":
+            update["snooze_until"] = until.isoformat()
+            lasts = f"until {_describe(until, now)}"
+        else:
+            update["proactive_enabled"] = False
+            lasts = "until the user turns proactive messages back on"
+        stop = {"message_id": mid, "preference_update": update}
+        blocks.append(("stop_requested", f"the user asked to stop proactive messages in {mid}; paused {lasts}. "
+                                         "The host must persist preference_update."))
+        break
+
+    pause_raw = prefs.get("pause_until_user_writes")
+    if pause_raw is not None:
+        since = _parse_dt(pause_raw, tz)
+        if since is None:
+            blocks.append(("paused_until_user_writes", f"preferences.pause_until_user_writes is unreadable ({pause_raw!r}); treated as paused."))
+        elif not user_wrote_after(since):
+            blocks.append(("paused_until_user_writes", f"the user asked for no proactive messages until they write again (asked {_describe(since, now)})."))
 
     # --- proactive history: delivery_log (authoritative) + history ------
     proactive = _proactive_records(history, log, tz, now, warnings)
@@ -494,7 +613,7 @@ def evaluate(ctx: Any) -> dict:
                 times[str(mem.get("id", f"memory#{i}"))] = "recorded " + _describe(rec, now)
 
     signals["times"] = times
-    return _result(blocks, signals, warnings)
+    return _result(blocks, signals, warnings, stop)
 
 
 def unwrap(obj: Any) -> Any:

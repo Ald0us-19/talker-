@@ -1,7 +1,7 @@
 {
   "id": "18-wait-asked-for-space",
-  "description": "A tempting follow-up exists (dentist), but the user asked not to be messaged; preferences were not updated by the host.",
-  "notes": "A stated wish in conversation must be honoured even when the preference flag lags behind.",
+  "description": "User asked not to be messaged until they reach out; preferences were never updated by the host.",
+  "notes": "Explicit stop request: enforced by the gate (stop_requested), not by model judgment, and returned as a preference_update (pause until the user writes) for the host to persist.",
   "input": {
     "now": "2026-11-25T12:00:00+01:00",
     "timezone": "Europe/Berlin",
@@ -50,14 +50,13 @@
     ]
   },
   "expect": {
-    "gate": "PASS",
+    "gate": "stop_requested",
     "decision": [
       "WAIT"
     ],
-    "boundary": true,
-    "generation": {
-      "boundary": true,
-      "max_candidates": 0
-    }
+    "preference_update": [
+      "pause_until_user_writes",
+      "updated_at"
+    ]
   }
 }

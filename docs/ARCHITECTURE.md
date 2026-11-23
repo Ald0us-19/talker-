@@ -67,7 +67,8 @@ adapters, and by the tests.
 |---|---|---|
 | Opt-in/opt-out, snooze/breaks, DND, quiet hours | rule (gate) | Consent and explicit boundaries never depend on a model. |
 | Daily cap, min gap (per mode), cooldowns, backoff | rule (gate) | Exact, auditable, user-configurable. |
-| Break or busy stated in conversation | model flags a `boundary` → policy forces WAIT | Phrasing varies too much for keywords. The reason tells the host to set `snooze_until`, which makes it a hard rule from then on. |
+| Explicit stop request in chat ("stop messaging me", "don't message me until Friday") | rule (gate `stop_requested`) → `preference_update` persisted by the host | Consent can't hinge on the model noticing it. Once stored, the preference enforces the stop even after the message leaves the history. |
+| Paraphrased break request, or busy/focus time | model flags a `boundary` → policy forces WAIT | Phrasing varies too much for keywords. A `requested_break` is also returned as a `preference_update` (pause until the user writes); focus time is not persisted. |
 | What is interesting to say | model (generator) | Needs understanding: open loops, links between interests, fresh angles, tone. |
 | How good each starter is right now | model (six 1–5 scores) | Judgment, but broken into criteria that can be inspected and tuned. |
 | Which starter wins, and whether any is good enough | policy (`decide.py`) | Deterministic and testable without a model; behaviour can be tuned without editing the prompt. |
@@ -106,7 +107,7 @@ simulation, with a constant supply of excellent candidates and an eager user, th
 | Deciding *when* to evaluate | — | A scheduler or event trigger (app opened, event ended, every hour while awake) |
 | Sending the message | — | A delivery channel |
 | Recording sends, replies, dismissals (`delivery_log`) | — | Storage |
-| Acting on boundaries, opt-out/mode/quiet-hours settings | — | Settings UI and persistence |
+| Persisting every `preference_update`; opt-out/mode/quiet-hours settings | — | Settings UI and persistence; stamping `updated_at`; resuming only on an explicit user action |
 | Long-term memory, interest profile | reads `memories[]`, `profile.interests[]` | Memory storage and retrieval |
 
 ## Fixes in this version
@@ -116,6 +117,7 @@ simulation, with a constant supply of excellent candidates and an eager user, th
 | Caller-supplied gate results | The API adapter used `request["gate"]` when present, so a forged `"PASS"` skipped every rule. SKILL.md told the model to trust it. | The gate is always recomputed: by `decide.py`, both adapters, and `validate.py`, which rejects SPEAK when the recomputed gate blocks. Covered by unit tests and `--forge-gate`. |
 | Malformed snooze | An unreadable `snooze_until` was warned about and ignored (fail open). | It counts as snoozed until the host fixes it. |
 | Dismissal timestamps | The cooldown ran from the message's *send* time; proactive messages with bad timestamps were dropped, along with their dismissals. | The cooldown runs from `dismissed_at`. A missing value falls back to the send time with a warning; a malformed one counts as now. |
+| Stop requests depended on the model | "Please don't message me" was only caught by the model's boundary flag, and only the `reason` text suggested setting `snooze_until`. | The gate detects explicit stop requests deterministically and returns a structured `preference_update` (`proactive_enabled: false`, `snooze_until`, or `pause_until_user_writes`) for the host to persist. Model-flagged breaks are persisted the same way. |
 | History-based rate limits | Caps and gaps were counted only from `history` entries marked proactive, so truncated history or bad timestamps undercounted. | `delivery_log` is the authoritative source, merged with history and deduplicated. Unreadable send times count as now. A missing log produces a warning. |
 
 ## Design decisions and trade-offs
@@ -169,8 +171,11 @@ simulation, with a constant supply of excellent candidates and an eager user, th
   the host records `replied_at`.
 - **Grading is substring-based.** It can't judge originality or warmth, and English-centric style
   rules don't cover other languages.
-- **Scenario authorship bias.** The 35 scenarios and 3 simulations were written by the same author
+- **Scenario authorship bias.** The 38 scenarios and 3 simulations were written by the same author
   as the policy; borderline labels are marked "either".
+- **Stop detection is phrase-based.** It covers explicit English and German phrasings. Paraphrases
+  depend on the model's boundary flag. A topic-limited request ("don't message me about work") is
+  treated as a full stop, which errs toward silence.
 - **History text is untrusted.** The gate and policy are immune to injected instructions; the
   model is told to treat history as data, but there is no dedicated prompt-injection defence.
 

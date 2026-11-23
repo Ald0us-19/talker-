@@ -1,23 +1,110 @@
 {
-  "description": "Final decision returned by scripts/decide.py. validate.py enforces the rules a JSON Schema cannot express: confidence in [0,1]; WAIT has message and selected null; SPEAK names a selected candidate, uses that candidate's message, cites evidence ids present in the context, clears the mode's speak bar, is not repetitive, and is only possible when the recomputed gate passes and no boundary is set.",
+  "description": "Final decision returned by scripts/decide.py. validate.py enforces the rules a JSON Schema cannot express: confidence in [0,1]; WAIT has message and selected null; SPEAK names a selected candidate, uses that candidate's message, cites evidence ids present in the context, clears the mode's speak bar, is not repetitive, and is only possible when the recomputed gate passes and no boundary is set. preference_update may only make preferences stricter.",
   "type": "object",
   "properties": {
-    "decision": { "type": "string", "enum": ["SPEAK", "WAIT"], "description": "SPEAK = initiate a conversation now; WAIT = stay silent." },
-    "reason": { "type": "string", "description": "Brief explanation: which candidate won and why, or why nothing was sent." },
-    "message": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Opening message for SPEAK; null for WAIT." },
-    "confidence": { "type": "number", "description": "SPEAK: the selected candidate's policy score. WAIT: how clearly silence is right." },
-    "evidence": { "type": "array", "items": { "type": "string" }, "description": "Context ids behind the decision." },
-    "selected": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Id of the chosen candidate, or null." },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "SPEAK",
+        "WAIT"
+      ],
+      "description": "SPEAK = initiate a conversation now; WAIT = stay silent."
+    },
+    "reason": {
+      "type": "string",
+      "description": "Brief explanation: which candidate won and why, or why nothing was sent."
+    },
+    "message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Opening message for SPEAK; null for WAIT."
+    },
+    "confidence": {
+      "type": "number",
+      "description": "SPEAK: the selected candidate's policy score. WAIT: how clearly silence is right."
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Context ids behind the decision."
+    },
+    "selected": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Id of the chosen candidate, or null."
+    },
     "boundary": {
-      "anyOf": [{ "type": "null" }, { "type": "object" }],
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
       "description": "The boundary that forced WAIT, if any (see opportunity-schema.json)."
     },
     "candidates": {
       "type": "array",
       "description": "The candidates considered, each with score, status (selected | eligible | below_bar | rejected) and note.",
-      "items": { "type": "object" }
+      "items": {
+        "type": "object"
+      }
+    },
+    "preference_update": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "proactive_enabled": {
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "snooze_until": {
+              "type": "string"
+            },
+            "pause_until_user_writes": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ],
+      "description": "Set when the user asked to stop or pause proactive contact. The host must merge it into the stored preferences (stamping updated_at) so the stop holds even after the request leaves the history."
     }
   },
-  "required": ["decision", "reason", "message", "confidence", "evidence", "selected", "boundary", "candidates"],
+  "required": [
+    "decision",
+    "reason",
+    "message",
+    "confidence",
+    "evidence",
+    "selected",
+    "boundary",
+    "candidates",
+    "preference_update"
+  ],
   "additionalProperties": false
 }

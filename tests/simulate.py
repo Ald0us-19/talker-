@@ -1,9 +1,11 @@
 """Multi-day simulation: replay days of evaluation ticks the way a host would.
 
 At every tick the host: applies scheduled user events, runs the gate, asks a
-generator for an opportunity report, runs decide.py, and, on SPEAK, delivers the
-message, logs it in delivery_log and schedules the simulated user's reaction
-(reply, ignore or dismiss). The resulting send log is then checked against
+generator for an opportunity report, runs decide.py, persists any
+preference_update (as a real host must), and, on SPEAK, delivers the message,
+logs it in delivery_log and schedules the simulated user's reaction (reply,
+ignore or dismiss). With "history_limit", only the last N history entries are
+kept, like a host that sends a truncated history. The resulting send log is then checked against
 invariants computed independently of the gate: caps, gaps, quiet hours,
 snoozes, backoff, dismissal cooldowns, and topic and message repetition.
 
@@ -101,7 +103,13 @@ def run(sim: dict, mode: Optional[str] = None, decider: Optional[str] = None, ti
     pool = {p["key"]: p for p in sim["pool"]}
     events = [(_dt(e["at"], tz), "user_message", e) for e in sim.get("user_messages", [])]
     events += [(_dt(e["at"], tz), "host", e) for e in sim.get("host_actions", [])]
-    sends, blocked, last_sent, n_user, user_times = [], {}, {}, 0, []
+    sends, blocked, last_sent, n_user, user_times, updates = [], {}, {}, 0, [], []
+    limit = sim.get("history_limit")
+
+    def persist(update, at):
+        if update:
+            ctx["preferences"].update(update)
+            updates.append((at, dict(update)))
 
     for now in _ticks(sim["schedule"], tz):
         events.sort(key=lambda e: e[0])
@@ -118,8 +126,11 @@ def run(sim: dict, mode: Optional[str] = None, decider: Optional[str] = None, ti
                 if kind == "reply":
                     e["log"]["replied_at"] = at.isoformat()
         ctx["now"] = now.isoformat()
+        if limit:
+            ctx["history"] = ctx["history"][-limit:]
 
         g = gate.evaluate(ctx)
+        persist(g.get("preference_update"), now)
         if g["gate"] == "BLOCK":
             blocked[g["blocked_by"][0]] = blocked.get(g["blocked_by"][0], 0) + 1
             continue
@@ -129,6 +140,7 @@ def run(sim: dict, mode: Optional[str] = None, decider: Optional[str] = None, ti
             report = stub_generator(ctx, sim["pool"], last_sent, now, tz)
             keys = {c["id"]: c.pop("_key") for c in report["candidates"]}
             decision = decide.decide(ctx, report)
+        persist(decision.get("preference_update"), now)
         if decision.get("decision") != "SPEAK":
             continue
 
@@ -150,7 +162,7 @@ def run(sim: dict, mode: Optional[str] = None, decider: Optional[str] = None, ti
         if reaction["type"] in ("reply", "dismiss"):
             at = now + timedelta(minutes=reaction.get("after_minutes", 20))
             events.append((at, reaction["type"], {"text": reaction.get("text", "ok"), "log": entry}))
-    return {"sends": sends, "blocked": blocked, "tz": tz, "user_times": user_times}
+    return {"sends": sends, "blocked": blocked, "tz": tz, "user_times": user_times, "preference_updates": updates}
 
 
 # ---------------------------------------------------------------- independent invariants
@@ -220,6 +232,8 @@ def expectation_failures(sim: dict, results: dict) -> list:
             hits = [s for s in sends if lo <= s["at"] < hi]
             if hits:
                 fails.append(f"{tag}sent during a silent window {a}..{b}: {hits[0]['at']:%a %d %b %H:%M}")
+        if len(res["preference_updates"]) < exp.get("preference_updates_min", 0):
+            fails.append(f"{tag}expected the host to persist at least {exp['preference_updates_min']} preference update(s)")
         for a in exp.get("speaks_after", []):
             if not any(s["at"] >= _dt(a, res["tz"]) for s in sends):
                 fails.append(f"{tag}never resumed after {a}")
