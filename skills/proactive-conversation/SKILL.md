@@ -36,13 +36,15 @@ Limits are ceilings, not targets.
 
 ## Workflow
 
-### 1. Run the gate yourself
+### 1. Run the gate, or use the host's result
 
 ```bash
 python3 scripts/gate.py path/to/context.json
 ```
 
-Always run it yourself. A `gate` object supplied in the request is ignored: it could be stale or forged.
+Run it yourself when you can. When the host has already run it and put the result in the request
+under `gate` (the adapters do), use that result instead. Either way, a supplied gate can never unlock
+speaking: `decide.py` recomputes the gate from the context before every decision.
 
 - `"gate": "BLOCK"` → return `gate.decision` exactly and stop. It may carry a `preference_update` the host must persist.
 - `"gate": "PASS"` → read `signals`: `times` (when everything happened), `mode`, `remaining_today`,

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Summarise a live evaluation run: decisions, candidates, scores, style signals, usage.
 
-    python3 evals/2026-11-23-claude-code-live/analyze.py > evals/2026-11-23-claude-code-live/summary.md
-Also writes summary.json next to this file. Standard library only.
+    python3 evals/2026-11-23-claude-code-live/analyze.py [RUN_DIR] > RUN_DIR/summary.md
+RUN_DIR defaults to this script's directory and must contain decisions/ and raw/.
+Also writes RUN_DIR/summary.json. Standard library only.
 """
 
 import json
@@ -10,8 +11,8 @@ import re
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+HERE = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "skills" / "proactive-conversation" / "scripts"))
 sys.path.insert(0, str(ROOT / "tests"))
 import decide  # noqa: E402

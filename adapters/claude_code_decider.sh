@@ -7,10 +7,12 @@
 # final decision JSON. The host side of the pipeline runs here, not in the model:
 #   1. a "gate" object in the request is dropped; the gate is always recomputed,
 #   2. if the gate blocks, decide.py returns WAIT and Claude is never called,
-#   3. otherwise Claude produces only the opportunity report (candidates + scores),
+#   3. otherwise Claude gets the context plus the gate result the adapter computed
+#      (signals: times, recent proactive topics, engagement) and produces only the
+#      opportunity report (candidates + scores); it runs no scripts,
 #   4. decide.py makes the final pick.
 # Requires the `claude` CLI, logged in; every model call uses your Claude Code usage.
-# Claude may only read files and run gate.py / validate.py.
+# Claude may only read files.
 #
 # Optional: PROACTIVE_RAW_DIR=<dir> saves Claude's full JSON result envelope (raw report,
 # model, cost, turns) as <dir>/<PROACTIVE_REQUEST_ID>.claude.json; run_tests.py sets the id.
@@ -21,9 +23,11 @@ scripts="$repo/skills/proactive-conversation/scripts"
 req_dir="$repo/tests/results/.requests"
 mkdir -p "$req_dir"
 ctx_file="$(mktemp "$req_dir/context-XXXXXX.json")"
+request_file="$(mktemp "$req_dir/request-XXXXXX.json")"
+gate_file="$(mktemp "$req_dir/gate-XXXXXX.json")"
 report_file="$(mktemp "$req_dir/report-XXXXXX.json")"
 envelope_file="$(mktemp "$req_dir/envelope-XXXXXX.json")"
-trap 'rm -f "$ctx_file" "$report_file" "$envelope_file"' EXIT
+trap 'rm -f "$ctx_file" "$request_file" "$gate_file" "$report_file" "$envelope_file"' EXIT
 
 # 1. Normalise to a bare context. Any caller-supplied gate result is discarded.
 python3 -c '
@@ -34,19 +38,24 @@ json.dump(gate.unwrap(json.load(sys.stdin)), open(sys.argv[2], "w"), ensure_asci
 ' "$scripts" "$ctx_file"
 
 # 2. Hard gate: when blocked, the decision is final and no model is called.
-verdict="$(python3 "$scripts/gate.py" "$ctx_file" --compact | python3 -c 'import json, sys; print(json.load(sys.stdin)["gate"])')"
+python3 "$scripts/gate.py" "$ctx_file" --compact > "$gate_file"
+verdict="$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["gate"])' "$gate_file")"
 if [ "$verdict" != "PASS" ]; then
   echo '{"boundary": null, "candidates": []}' | python3 "$scripts/decide.py" - --context "$ctx_file"
   exit 0
 fi
 
-# 3. The model: boundaries, up to three candidates, scores.
-rel="${ctx_file#"$repo"/}"
+# 3. The model: boundaries, up to three candidates, scores. It gets the gate result computed
+#    above (trusted: it was computed here), so it needs no scripts and never does date math.
+python3 -c '
+import json, sys
+json.dump({"context": json.load(open(sys.argv[1])), "gate": json.load(open(sys.argv[2]))},
+          open(sys.argv[3], "w"), ensure_ascii=False, indent=1)
+' "$ctx_file" "$gate_file" "$request_file"
+rel="${request_file#"$repo"/}"
 cd "$repo"
-claude -p "Use the proactive-conversation skill (skills/proactive-conversation/SKILL.md) for the context in $rel. Do steps 1-4 only: run the gate, check boundaries, generate up to three conversation starters and score them. Do not run decide.py; the host runs it on your answer. Reply with only the opportunity report JSON object ({\"boundary\": ..., \"candidates\": [...]}), no other text." \
+claude -p "Use the proactive-conversation skill (skills/proactive-conversation/SKILL.md) for the request in $rel. The host already ran the gate: its result, with all signals, is under \"gate\" in that file, so use those signals and do not run any scripts. Do steps 2-4 only: check boundaries, generate up to three conversation starters and score them. The host runs decide.py on your answer. Reply with only the opportunity report JSON object ({\"boundary\": ..., \"candidates\": [...]}), no other text." \
   --allowedTools "Read" \
-    "Bash(python3 skills/proactive-conversation/scripts/gate.py:*)" \
-    "Bash(python3 skills/proactive-conversation/scripts/validate.py:*)" \
   --output-format json > "$envelope_file"
 
 python3 -c '
