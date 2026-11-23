@@ -15,3 +15,10 @@ scenario                                   gate                 gen  decision co
     message: If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.
       c1 idea       selected  0.5   Upgrading aglio e olio with toasted breadcrumbs
       c2 curiosity  rejected  0.0   Other quick weeknight dinners
+17-either-already-resolved                 PASS                 ok   SPEAK    0.55   PASS (20.7s)
+    reason : Picked c1 (idea: Regression to the mean origin story), score 0.55 >= 0.50 in balanced mode. The user worried regression would be hard (m1), then found it fine and passed with 87% (m4). A light, well-established historical fact about the topic they just mastered is a low-pressure follow-on. The exam loop itself is already closed (m4–m6), so this brings a new angle rather than re-asking.
+    message: Fun bit of trivia now that regression didn't kill you: Galton named it in the 1880s after noticing very tall parents tend to have slightly less tall kids, the original 'regression to the mean'. Did your course ever cover where the name came from?
+      c1 idea       selected  0.55  Regression to the mean origin story
+      c2 curiosity  below_bar 0.463 What clicked with regression
+19-wait-focus-time                         PASS                 ok   WAIT     0.95   PASS (16.8s)
+    reason : Boundary (focus_time): The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.).

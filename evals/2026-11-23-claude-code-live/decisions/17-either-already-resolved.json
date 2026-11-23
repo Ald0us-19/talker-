@@ -1,0 +1,59 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (idea: Regression to the mean origin story), score 0.55 >= 0.50 in balanced mode. The user worried regression would be hard (m1), then found it fine and passed with 87% (m4). A light, well-established historical fact about the topic they just mastered is a low-pressure follow-on. The exam loop itself is already closed (m4–m6), so this brings a new angle rather than re-asking.",
+  "message": "Fun bit of trivia now that regression didn't kill you: Galton named it in the 1880s after noticing very tall parents tend to have slightly less tall kids, the original 'regression to the mean'. Did your course ever cover where the name came from?",
+  "confidence": 0.55,
+  "evidence": [
+    "m1",
+    "m4"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "idea",
+      "topic": "Regression to the mean origin story",
+      "message": "Fun bit of trivia now that regression didn't kill you: Galton named it in the 1880s after noticing very tall parents tend to have slightly less tall kids, the original 'regression to the mean'. Did your course ever cover where the name came from?",
+      "rationale": "The user worried regression would be hard (m1), then found it fine and passed with 87% (m4). A light, well-established historical fact about the topic they just mastered is a low-pressure follow-on. The exam loop itself is already closed (m4–m6), so this brings a new angle rather than re-asking.",
+      "evidence": [
+        "m1",
+        "m4"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.55,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "What clicked with regression",
+      "message": "You went from 'regression is going to kill me' to finding the exam question fine. Was there a moment it clicked, or did it just turn out easier than it looked?",
+      "rationale": "Contrasts m1 with m4 and asks about the user's own experience. It is a real question about how they learned, not a repeat of the exam result, which was already acknowledged in m5.",
+      "evidence": [
+        "m1",
+        "m4"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 2,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.463,
+      "status": "below_bar",
+      "note": "score 0.46 below the balanced bar 0.50"
+    }
+  ],
+  "preference_update": null
+}

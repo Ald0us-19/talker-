@@ -1,0 +1,21 @@
+{
+  "decision": "WAIT",
+  "reason": "Boundary (focus_time): The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.).",
+  "message": null,
+  "confidence": 0.95,
+  "evidence": [
+    "m1",
+    "e1"
+  ],
+  "selected": null,
+  "boundary": {
+    "type": "focus_time",
+    "note": "The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.)",
+    "evidence": [
+      "m1",
+      "e1"
+    ]
+  },
+  "candidates": [],
+  "preference_update": null
+}
