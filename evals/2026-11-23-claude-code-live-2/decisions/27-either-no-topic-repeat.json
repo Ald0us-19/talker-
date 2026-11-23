@@ -1,0 +1,63 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (revisit: Harz spring hiking trip), score 0.78 >= 0.50 in balanced mode. The user brought up a spring Harz trip five days ago and left it open ('will think about it'). This gives them a concrete quieter alternative to the Brocken question they hadn't answered. Hiking is a listed interest, and the topic isn't in recent proactive messages.",
+  "message": "Still mulling the Harz for spring? If the Brocken feels too busy, the Harzer Hexenstieg is a quieter option: you can walk a section of it through the Bode gorge to Thale instead of doing the whole thing.",
+  "confidence": 0.78,
+  "evidence": [
+    "m1",
+    "m2",
+    "m3",
+    "i2"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "Harz spring hiking trip",
+      "message": "Still mulling the Harz for spring? If the Brocken feels too busy, the Harzer Hexenstieg is a quieter option: you can walk a section of it through the Bode gorge to Thale instead of doing the whole thing.",
+      "rationale": "The user brought up a spring Harz trip five days ago and left it open ('will think about it'). This gives them a concrete quieter alternative to the Brocken question they hadn't answered. Hiking is a listed interest, and the topic isn't in recent proactive messages.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.775,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "favourite past hike",
+      "message": "Planning the Harz got me wondering: what's the best hike you've done so far, the one a spring trip would have to live up to?",
+      "rationale": "A light question about the user's own hiking experience that ties to the open Harz idea from a different angle. It's low pressure and easy to ignore.",
+      "evidence": [
+        "i2",
+        "m1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.613,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

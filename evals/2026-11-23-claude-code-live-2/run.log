@@ -1,0 +1,73 @@
+mode: live   suite: scenarios
+
+scenario                                   gate                 gen  decision conf   result
+--------------------------------------------------------------------------------------------
+01-speak-interview-followup                PASS                 ok   SPEAK    0.80   PASS (12.1s)
+    reason : Picked c1 (follow_up: Lindqvist Design final-round interview), score 0.80 >= 0.50 in balanced mode. User said Tuesday 2pm was the final-round interview, admitted being terrified, and promised to report back. It is now Tuesday evening, a few hours after the interview, with no message from them since Sunday. The outcome is unknown, so the message asks open-endedly.
+    message: Your final round at Lindqvist Design was this afternoon. How did it go? No pressure if you'd rather decompress first.
+      c1 follow_up  selected  0.8   Lindqvist Design final-round interview
+05-speak-german-move                       PASS                 ok   SPEAK    0.71   PASS (12.0s)
+    reason : Picked c1 (follow_up: Umzug am Samstag), score 0.71 >= 0.50 in balanced mode. The user said the move was the next day (Saturday) and promised to report back afterwards, but hasn't yet. Sunday evening, the day after, is a natural, relaxed moment to ask, and the outcome stays open.
+    message: Gestern war ja dein Umzug mit den drei Freunden. Wie ist es gelaufen, und hat es mit den letzten Kisten noch geklappt?
+      c1 follow_up  selected  0.713 Umzug am Samstag
+16-either-closed-thread                    PASS                 ok   WAIT     0.65   PASS (16.6s)
+    reason : No candidate cleared the balanced bar (0.50); best was c1 'Another quick weeknight pasta' at 0.35.
+      c1 idea       below_bar 0.35  Another quick weeknight pasta
+17-either-already-resolved                 PASS                 ok   SPEAK    0.55   PASS (19.2s)
+    reason : Picked c1 (idea: Origin of the word regression), score 0.55 >= 0.50 in balanced mode. The user worried regression would sink their stats exam, then passed with 87% and said the regression question was fine. A light piece of trivia about the topic they dreaded fits now that the stress is over. The exam follow-up loop is already closed, so this brings something new instead of reopening it.
+    message: Now that regression didn't kill you after all: the name comes from Galton noticing that very tall parents tended to have kids closer to average height. He called it 'regression towards mediocrity', which is a slightly rude name for a method.
+      c1 idea       selected  0.55  Origin of the word regression
+      c2 curiosity  eligible  0.5   Stats after the exam
+19-wait-focus-time                         PASS                 ok   WAIT     0.95   PASS (9.7s)
+    reason : Boundary (focus_time): User said they'd be in full focus mode this morning, with their phone on silent and no distractions until the 10:00–12:00 exam is over. Now is 08:30 on the exam morning, so that window is in effect.
+21-either-stale-pottery                    PASS                 ok   WAIT     0.65   PASS (11.2s)
+    reason : No candidate cleared the balanced bar (0.50); best was c1 'Pottery class idea' at 0.35.
+      c1 revisit    below_bar 0.35  Pottery class idea
+22-wait-repeat-after-no-reply              PASS                 ok   WAIT     0.90   PASS (7.7s)
+    reason : No grounded conversation starter was found in the context.
+23-either-vague-sister                     PASS                 ok   SPEAK    0.66   PASS (11.5s)
+    reason : Picked c1 (follow_up: Sister's thing on Saturday), score 0.66 >= 0.50 in balanced mode. On Thursday the user said they were dreading their sister's event on Saturday and said 'Maybe after. Not tonight.' about talking it over. That was an invitation to come back once it was over. The event was yesterday, and Sunday afternoon is a calm, low-pressure time. The message keeps the details vague and lea…
+    message: Your sister's thing was yesterday, the one you were dreading a bit. If you feel like talking it through now that it's over, I'm here. No pressure either way.
+      c1 follow_up  selected  0.663 Sister's thing on Saturday
+24-speak-interest-connection               PASS                 ok   SPEAK    0.81   PASS (15.1s)
+    reason : Picked c1 (connection: Pasteur and Gus the starter), score 0.81 >= 0.50 in balanced mode. Links Tuesday's Pasteur lecture to their sourdough starter Gus. It's Saturday morning and they bake on weekends, so this is a good time.
+    message: After your Pasteur lecture, Gus looks a bit different: he's the kind of mixed culture of wild yeast and bacteria Pasteur spent years untangling, and Gus has kept his own balance going since well before October. Did the course get into fermentation microbes?
+      c1 connection selected  0.812 Pasteur and Gus the starter
+      c2 idea       eligible  0.613 Pasteur's swan-neck flask experiment
+      c3 casual     eligible  0.65  Weekend bake plans
+25-speak-revisit-debate                    PASS                 ok   SPEAK    0.86   PASS (17.4s)
+    reason : Picked c1 (revisit: Car-free city centres debate), score 0.86 >= 0.50 in balanced mode. The user said 'we should continue this sometime' about banning private cars and said they had more arguments. They enjoy arguing about urban planning and live in Berlin, so a Berlin test case gives the debate a new angle. Wednesday at 19:30 is a relaxed evening slot, well before quiet hours.
+    message: You left our car-free city centre debate with more arguments still to come. Here's a test case: would your ban hold up for everything inside Berlin's Ringbahn, or is that too big an area for exemptions to cover?
+      c1 revisit    selected  0.863 Car-free city centres debate
+      c2 curiosity  eligible  0.65  Best-designed Berlin neighbourhood
+26-speak-casual-lively                     PASS                 ok   SPEAK    0.86   PASS (15.6s)
+    reason : Picked c1 (follow_up: next book after The Left Hand of Darkness), score 0.86 >= 0.40 in lively mode. The user finished the book, asked for something new, and put off suggestions until later. A relaxed Sunday afternoon is a good time to pick that up.
+    message: You were too tired for book ideas on Thursday, so here are two: The Dispossessed if you want more Le Guin, or Ancillary Justice if the gender ideas in Left Hand stuck with you. Want a few more along those lines?
+      c1 follow_up  selected  0.863 next book after The Left Hand of Darkness
+      c2 casual     eligible  0.663 Miso settling in
+      c3 connection eligible  0.662 Le Guin and her cat
+27-either-no-topic-repeat                  PASS                 ok   SPEAK    0.78   PASS (14.8s)
+    reason : Picked c1 (revisit: Harz spring hiking trip), score 0.78 >= 0.50 in balanced mode. The user brought up a spring Harz trip five days ago and left it open ('will think about it'). This gives them a concrete quieter alternative to the Brocken question they hadn't answered. Hiking is a listed interest, and the topic isn't in recent proactive messages.
+    message: Still mulling the Harz for spring? If the Brocken feels too busy, the Harzer Hexenstieg is a quieter option: you can walk a section of it through the Bode gorge to Thale instead of doing the whole thing.
+      c1 revisit    selected  0.775 Harz spring hiking trip
+      c2 curiosity  eligible  0.613 favourite past hike
+28-wait-busy-day                           PASS                 ok   WAIT     0.95   PASS (9.7s)
+    reason : Boundary (focus_time): This morning the user said they have back-to-back meetings until 6 pm today. It is now 14:00 on the same day, so they are still busy.
+29-wait-grief-no-hobby-chat                PASS                 FAIL WAIT     0.80   FAIL (15.0s)
+    x generation: a candidate contains forbidden/ungrounded/repeated term 'training'
+    x generation: a candidate contains forbidden/ungrounded/repeated term ' km'
+    reason : Every candidate was rejected. Rejected: c1 (would feel forced or artificial)
+      c1 casual     rejected  0.0   a gentle ride for the spring 100 km
+30-speak-lively-third-message              PASS                 ok   WAIT     0.81   FAIL (18.5s)
+    x decision: decision WAIT, expected SPEAK
+    reason : No candidate cleared the lively bar (0.40); best was c1 'jazz record for a long cooking evening' at 0.19.
+      c1 connection below_bar 0.188 jazz record for a long cooking evening
+      c2 curiosity  below_bar 0.1   how they find jazz records
+--------------------------------------------------------------------------------------------
+gate rules correct            : 15/15
+candidate generation passed   : 14/15  (scenarios the gate lets through)
+final decision passed         : 14/15
+spoke when it should have waited : 0
+waited when it should have spoken: 1
+decisions saved to : evals/2026-11-23-claude-code-live-2/decisions
+

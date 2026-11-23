@@ -1,0 +1,60 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (revisit: Car-free city centres debate), score 0.86 >= 0.50 in balanced mode. The user said 'we should continue this sometime' about banning private cars and said they had more arguments. They enjoy arguing about urban planning and live in Berlin, so a Berlin test case gives the debate a new angle. Wednesday at 19:30 is a relaxed evening slot, well before quiet hours.",
+  "message": "You left our car-free city centre debate with more arguments still to come. Here's a test case: would your ban hold up for everything inside Berlin's Ringbahn, or is that too big an area for exemptions to cover?",
+  "confidence": 0.86,
+  "evidence": [
+    "m1",
+    "m3",
+    "k1"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "Car-free city centres debate",
+      "message": "You left our car-free city centre debate with more arguments still to come. Here's a test case: would your ban hold up for everything inside Berlin's Ringbahn, or is that too big an area for exemptions to cover?",
+      "rationale": "The user said 'we should continue this sometime' about banning private cars and said they had more arguments. They enjoy arguing about urban planning and live in Berlin, so a Berlin test case gives the debate a new angle. Wednesday at 19:30 is a relaxed evening slot, well before quiet hours.",
+      "evidence": [
+        "m1",
+        "m3",
+        "k1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.863,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "Best-designed Berlin neighbourhood",
+      "message": "Urban planning question for someone who enjoys arguing about it: which Berlin neighbourhood do you think is best designed, and which one would you redesign first?",
+      "rationale": "Asks for the user's opinion on urban planning in their own city. It is separate from the car-ban thread and gives an easy, low-pressure way back into conversation.",
+      "evidence": [
+        "k1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.65,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

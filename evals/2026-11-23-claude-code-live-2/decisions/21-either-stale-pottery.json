@@ -1,0 +1,33 @@
+{
+  "decision": "WAIT",
+  "reason": "No candidate cleared the balanced bar (0.50); best was c1 'Pottery class idea' at 0.35.",
+  "message": null,
+  "confidence": 0.65,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "Pottery class idea",
+      "message": "A few weeks back you mentioned maybe trying a pottery class sometime. Did that idea stick around, or did it drift off?",
+      "rationale": "The only personal hook in the context is a passing remark from 19 days ago. It was tentative and low-commitment, so a light, open-ended revisit fits, and Monday early evening is a relaxed moment. There's little to go on, so relevance and engagement are uncertain.",
+      "evidence": [
+        "m1"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 2,
+        "interruption_cost": 2
+      },
+      "score": 0.35,
+      "status": "below_bar",
+      "note": "score 0.35 below the balanced bar 0.50"
+    }
+  ],
+  "preference_update": null
+}

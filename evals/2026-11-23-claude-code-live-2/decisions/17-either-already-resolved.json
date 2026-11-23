@@ -1,0 +1,59 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (idea: Origin of the word regression), score 0.55 >= 0.50 in balanced mode. The user worried regression would sink their stats exam, then passed with 87% and said the regression question was fine. A light piece of trivia about the topic they dreaded fits now that the stress is over. The exam follow-up loop is already closed, so this brings something new instead of reopening it.",
+  "message": "Now that regression didn't kill you after all: the name comes from Galton noticing that very tall parents tended to have kids closer to average height. He called it 'regression towards mediocrity', which is a slightly rude name for a method.",
+  "confidence": 0.55,
+  "evidence": [
+    "m1",
+    "m4"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "idea",
+      "topic": "Origin of the word regression",
+      "message": "Now that regression didn't kill you after all: the name comes from Galton noticing that very tall parents tended to have kids closer to average height. He called it 'regression towards mediocrity', which is a slightly rude name for a method.",
+      "rationale": "The user worried regression would sink their stats exam, then passed with 87% and said the regression question was fine. A light piece of trivia about the topic they dreaded fits now that the stress is over. The exam follow-up loop is already closed, so this brings something new instead of reopening it.",
+      "evidence": [
+        "m1",
+        "m4"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.55,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "Stats after the exam",
+      "message": "After that 87% in stats, are you glad to see the back of it, or did regression end up being one of the more satisfying parts once it clicked?",
+      "rationale": "The user said the feared regression question turned out fine. Asking how they feel about the subject now is a real question about their experience, not a check-in. It is low pressure on a Thursday evening a day after the exam.",
+      "evidence": [
+        "m4",
+        "m6"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.5,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

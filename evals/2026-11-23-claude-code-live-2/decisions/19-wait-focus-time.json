@@ -1,0 +1,21 @@
+{
+  "decision": "WAIT",
+  "reason": "Boundary (focus_time): User said they'd be in full focus mode this morning, with their phone on silent and no distractions until the 10:00–12:00 exam is over. Now is 08:30 on the exam morning, so that window is in effect.",
+  "message": null,
+  "confidence": 0.95,
+  "evidence": [
+    "m1",
+    "e1"
+  ],
+  "selected": null,
+  "boundary": {
+    "type": "focus_time",
+    "note": "User said they'd be in full focus mode this morning, with their phone on silent and no distractions until the 10:00–12:00 exam is over. Now is 08:30 on the exam morning, so that window is in effect.",
+    "evidence": [
+      "m1",
+      "e1"
+    ]
+  },
+  "candidates": [],
+  "preference_update": null
+}

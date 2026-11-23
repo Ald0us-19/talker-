@@ -1,0 +1,35 @@
+{
+  "decision": "WAIT",
+  "reason": "No candidate cleared the balanced bar (0.50); best was c1 'Another quick weeknight pasta' at 0.35.",
+  "message": null,
+  "confidence": 0.65,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "idea",
+      "topic": "Another quick weeknight pasta",
+      "message": "Since the aglio e olio worked out: cacio e pepe is its 15-minute cousin, with just pecorino, black pepper and starchy pasta water. Good one to keep for another weeknight.",
+      "rationale": "They asked for a 20-minute weeknight pasta and liked the result. It's dinner time on another weeknight, so a second quick recipe fits. But they closed the topic ('that's all I needed'), there is no profile or engagement data, and a message they didn't ask for may feel unprompted.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 2,
+        "interruption_cost": 2
+      },
+      "score": 0.35,
+      "status": "below_bar",
+      "note": "score 0.35 below the balanced bar 0.50"
+    }
+  ],
+  "preference_update": null
+}

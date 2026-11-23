@@ -1,0 +1,39 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: Sister's thing on Saturday), score 0.66 >= 0.50 in balanced mode. On Thursday the user said they were dreading their sister's event on Saturday and said 'Maybe after. Not tonight.' about talking it over. That was an invitation to come back once it was over. The event was yesterday, and Sunday afternoon is a calm, low-pressure time. The message keeps the details vague and lea…",
+  "message": "Your sister's thing was yesterday, the one you were dreading a bit. If you feel like talking it through now that it's over, I'm here. No pressure either way.",
+  "confidence": 0.66,
+  "evidence": [
+    "m1",
+    "m2",
+    "m3"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Sister's thing on Saturday",
+      "message": "Your sister's thing was yesterday, the one you were dreading a bit. If you feel like talking it through now that it's over, I'm here. No pressure either way.",
+      "rationale": "On Thursday the user said they were dreading their sister's event on Saturday and said 'Maybe after. Not tonight.' about talking it over. That was an invitation to come back once it was over. The event was yesterday, and Sunday afternoon is a calm, low-pressure time. The message keeps the details vague and leaves an easy way out. It's an emotionally sensitive topic, so the interruption cost is moderate.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 4,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.663,
+      "status": "selected",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

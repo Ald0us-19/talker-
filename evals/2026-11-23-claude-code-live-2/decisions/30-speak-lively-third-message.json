@@ -1,0 +1,56 @@
+{
+  "decision": "WAIT",
+  "reason": "No candidate cleared the lively bar (0.40); best was c1 'jazz record for a long cooking evening' at 0.19.",
+  "message": null,
+  "confidence": 0.81,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "connection",
+      "topic": "jazz record for a long cooking evening",
+      "message": "A slow-simmering pot tonight is a good excuse for a record that plays all the way through. Ahmad Jamal's 'At the Pershing' has that unhurried feel. What usually ends up on the turntable when you cook?",
+      "rationale": "Brings together their two listed interests, jazz records and home cooking, for the cooking night they just confirmed. It doesn't go back to ramen technique, which has already been covered today.",
+      "evidence": [
+        "i1",
+        "i2",
+        "u2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 2
+      },
+      "score": 0.188,
+      "status": "below_bar",
+      "note": "score 0.19 below the lively bar 0.40"
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "how they find jazz records",
+      "message": "Totally different question: do your jazz records mostly come from crate-digging in shops, or from tracking down specific albums you already have in mind?",
+      "rationale": "A real question about an interest on their profile that hasn't come up yet. It's easy to ignore, but it's the third proactive message today and only an hour after the last one.",
+      "evidence": [
+        "i1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 2,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.1,
+      "status": "below_bar",
+      "note": "score 0.10 below the lively bar 0.40"
+    }
+  ],
+  "preference_update": null
+}

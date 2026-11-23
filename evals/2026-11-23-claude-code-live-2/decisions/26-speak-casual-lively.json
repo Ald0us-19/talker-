@@ -1,0 +1,86 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: next book after The Left Hand of Darkness), score 0.86 >= 0.40 in lively mode. The user finished the book, asked for something new, and put off suggestions until later. A relaxed Sunday afternoon is a good time to pick that up.",
+  "message": "You were too tired for book ideas on Thursday, so here are two: The Dispossessed if you want more Le Guin, or Ancillary Justice if the gender ideas in Left Hand stuck with you. Want a few more along those lines?",
+  "confidence": 0.86,
+  "evidence": [
+    "m3",
+    "m4",
+    "m5",
+    "i1"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "next book after The Left Hand of Darkness",
+      "message": "You were too tired for book ideas on Thursday, so here are two: The Dispossessed if you want more Le Guin, or Ancillary Justice if the gender ideas in Left Hand stuck with you. Want a few more along those lines?",
+      "rationale": "The user finished the book, asked for something new, and put off suggestions until later. A relaxed Sunday afternoon is a good time to pick that up.",
+      "evidence": [
+        "m3",
+        "m4",
+        "m5",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.863,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "casual",
+      "topic": "Miso settling in",
+      "message": "Has Miso stuck with the sofa since that first night out from under the bed, or is she still splitting her time?",
+      "rationale": "Light check on the new cat's progress after the trust milestone the user was happy about almost a week ago.",
+      "evidence": [
+        "k1",
+        "m1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 3,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.663,
+      "status": "eligible",
+      "note": null
+    },
+    {
+      "id": "c3",
+      "kind": "connection",
+      "topic": "Le Guin and her cat",
+      "message": "Fun link between your week's two highlights: Le Guin wrote some lovely essays about her cat Pard in No Time to Spare. Could be a gentle read while Miso settles in.",
+      "rationale": "Connects the author the user just finished with their new cat, using a well-known fact about Le Guin's essay collection.",
+      "evidence": [
+        "m3",
+        "k1",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 5,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.662,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

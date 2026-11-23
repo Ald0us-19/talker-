@@ -1,0 +1,35 @@
+{
+  "decision": "WAIT",
+  "reason": "Every candidate was rejected. Rejected: c1 (would feel forced or artificial)",
+  "message": null,
+  "confidence": 0.8,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "casual",
+      "topic": "a gentle ride for the spring 100 km",
+      "message": "No need to reply. If an easy, unstructured spin this weekend sounds good, it still counts toward that spring 100 km, and there's no pressure on the training plan right now.",
+      "rationale": "Their grandmother died two days ago and they said they don't want to talk about it yet. That isn't a request for no contact, but cheerful hobby chatter doesn't fit. This is the gentlest grounded option, and it still risks feeling intrusive or off-key, so it's scored low.",
+      "evidence": [
+        "m1",
+        "k1",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 3,
+        "novelty": 3,
+        "naturalness": 2,
+        "timing": 2,
+        "engagement": 2,
+        "interruption_cost": 4
+      },
+      "score": 0.0,
+      "status": "rejected",
+      "note": "would feel forced or artificial"
+    }
+  ],
+  "preference_update": null
+}
