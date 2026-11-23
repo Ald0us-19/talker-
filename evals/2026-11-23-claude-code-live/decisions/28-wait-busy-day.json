@@ -1,0 +1,19 @@
+{
+  "decision": "WAIT",
+  "reason": "Boundary (focus_time): User said they are in back-to-back meetings until 6pm today; it is 2pm now, so that busy period is still on.",
+  "message": null,
+  "confidence": 0.95,
+  "evidence": [
+    "m1"
+  ],
+  "selected": null,
+  "boundary": {
+    "type": "focus_time",
+    "note": "User said they are in back-to-back meetings until 6pm today; it is 2pm now, so that busy period is still on.",
+    "evidence": [
+      "m1"
+    ]
+  },
+  "candidates": [],
+  "preference_update": null
+}

@@ -1,0 +1,56 @@
+{
+  "decision": "WAIT",
+  "reason": "No candidate cleared the lively bar (0.40); best was c1 'jazz soundtrack for a long cook' at 0.14.",
+  "message": null,
+  "confidence": 0.86,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "connection",
+      "topic": "jazz soundtrack for a long cook",
+      "message": "A slow broth wants a slow record. Do you have a jazz album you save for long evenings in the kitchen, or does the cooking get silence?",
+      "rationale": "Joins their two interests, jazz records and home cooking, around the cook they planned for tonight, without going back to the ramen itself, which was the last proactive topic.",
+      "evidence": [
+        "i1",
+        "i2",
+        "u2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.138,
+      "status": "below_bar",
+      "note": "score 0.14 below the lively bar 0.40"
+    },
+    {
+      "id": "c2",
+      "kind": "curiosity",
+      "topic": "winter jazz record",
+      "message": "Some jazz records only feel right once it gets dark at four, like late-night trio albums. Which one in your collection is your winter record?",
+      "rationale": "A real question about their taste in jazz records, an interest they listed that has not come up in recent proactive messages. It suits the late-November afternoon in Berlin.",
+      "evidence": [
+        "i1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.138,
+      "status": "below_bar",
+      "note": "score 0.14 below the lively bar 0.40"
+    }
+  ],
+  "preference_update": null
+}

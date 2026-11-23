@@ -1,0 +1,911 @@
+[
+  {
+    "id": "01-speak-interview-followup",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.8,
+    "selected": "c1",
+    "message": "Your final round at Lindqvist Design was this afternoon. How did it go? No rush if you'd rather decompress first.",
+    "boundary": null,
+    "reason": "Picked c1 (follow_up: Lindqvist Design final-round interview), score 0.80 >= 0.50 in balanced mode. The user said the 2pm Tuesday final-round interview had them terrified and promised to report back. It is now Tuesday evening, a few hours after the interview, so this is the natural moment for a low-pressure follow-up that doesn't assume how it went.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "follow_up",
+        "topic": "Lindqvist Design final-round interview",
+        "message": "Your final round at Lindqvist Design was this afternoon. How did it go? No rush if you'd rather decompress first.",
+        "scores": {
+          "relevance": 5,
+          "novelty": 4,
+          "naturalness": 5,
+          "timing": 5,
+          "engagement": 4,
+          "interruption_cost": 2
+        },
+        "base": 0.8,
+        "score": 0.8,
+        "status": "selected",
+        "note": null,
+        "chars": 113,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Your final round"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 17.9,
+    "cost_usd": 0.1633766,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "05-speak-german-move",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.66,
+    "selected": "c1",
+    "message": "Gestern war ja der große Umzug mit deinen drei Helfern. Wie ist es gelaufen, und sind die letzten Kisten noch rechtzeitig zugegangen?",
+    "boundary": null,
+    "reason": "Picked c1 (follow_up: Umzug am Samstag), score 0.66 >= 0.50 in balanced mode. User moved on Saturday (the day after m1) and said they would report back afterwards (m3). It is now Sunday evening, a relaxed time a day after the move, and they haven't written yet. The outcome is unknown, so the message asks rather than assumes.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "follow_up",
+        "topic": "Umzug am Samstag",
+        "message": "Gestern war ja der große Umzug mit deinen drei Helfern. Wie ist es gelaufen, und sind die letzten Kisten noch rechtzeitig zugegangen?",
+        "scores": {
+          "relevance": 5,
+          "novelty": 4,
+          "naturalness": 4,
+          "timing": 4,
+          "engagement": 3,
+          "interruption_cost": 2
+        },
+        "base": 0.663,
+        "score": 0.663,
+        "status": "selected",
+        "note": null,
+        "chars": 133,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Gestern war ja"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 20.8,
+    "cost_usd": 0.16604000000000002,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "16-either-closed-thread",
+    "expected": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.5,
+    "selected": "c1",
+    "message": "If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.",
+    "boundary": null,
+    "reason": "Picked c1 (idea: Upgrading aglio e olio with toasted breadcrumbs), score 0.50 >= 0.50 in balanced mode. Yesterday the user made the 20-minute aglio e olio and said it was perfect. It's dinnertime again now, so a small, specific twist on a dish that worked is relevant. But they closed the thread with 'that's all I needed' and their use was purely task-based, so engagement is uncertain.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "idea",
+        "topic": "Upgrading aglio e olio with toasted breadcrumbs",
+        "message": "If the aglio e olio becomes a regular, try toasting a handful of breadcrumbs in the garlic oil and scattering them on top. They add crunch and take about two extra minutes.",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 4,
+          "engagement": 2,
+          "interruption_cost": 2
+        },
+        "base": 0.5,
+        "score": 0.5,
+        "status": "selected",
+        "note": null,
+        "chars": 172,
+        "questions": 0,
+        "exclaims": 0,
+        "opening": "If the aglio"
+      },
+      {
+        "id": "c2",
+        "kind": "curiosity",
+        "topic": "Other quick weeknight dinners",
+        "message": "Since the 15-minute aglio e olio went well: is there another dish you'd like cut down to weeknight speed, or do you mostly rotate a few favourites?",
+        "scores": {
+          "relevance": 3,
+          "novelty": 3,
+          "naturalness": 2,
+          "timing": 3,
+          "engagement": 2,
+          "interruption_cost": 2
+        },
+        "base": 0.3,
+        "score": 0.0,
+        "status": "rejected",
+        "note": "would feel forced or artificial",
+        "chars": 147,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Since the 15-minute"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 18.5,
+    "cost_usd": 0.1653526,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "17-either-already-resolved",
+    "expected": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.55,
+    "selected": "c1",
+    "message": "Fun bit of trivia now that regression didn't kill you: Galton named it in the 1880s after noticing very tall parents tend to have slightly less tall kids, the original 'regression to the mean'. Did your course ever cover where the name came from?",
+    "boundary": null,
+    "reason": "Picked c1 (idea: Regression to the mean origin story), score 0.55 >= 0.50 in balanced mode. The user worried regression would be hard (m1), then found it fine and passed with 87% (m4). A light, well-established historical fact about the topic they just mastered is a low-pressure follow-on. The exam loop itself is already closed (m4–m6), so this brings a new angle rather than re-asking.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "idea",
+        "topic": "Regression to the mean origin story",
+        "message": "Fun bit of trivia now that regression didn't kill you: Galton named it in the 1880s after noticing very tall parents tend to have slightly less tall kids, the original 'regression to the mean'. Did your course ever cover where the name came from?",
+        "scores": {
+          "relevance": 3,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.55,
+        "score": 0.55,
+        "status": "selected",
+        "note": null,
+        "chars": 246,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Fun bit of"
+      },
+      {
+        "id": "c2",
+        "kind": "curiosity",
+        "topic": "What clicked with regression",
+        "message": "You went from 'regression is going to kill me' to finding the exam question fine. Was there a moment it clicked, or did it just turn out easier than it looked?",
+        "scores": {
+          "relevance": 3,
+          "novelty": 3,
+          "naturalness": 3,
+          "timing": 2,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.463,
+        "score": 0.463,
+        "status": "below_bar",
+        "note": "score 0.46 below the balanced bar 0.50",
+        "chars": 159,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "You went from"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 19.5,
+    "cost_usd": 0.16893880000000003,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "19-wait-focus-time",
+    "expected": [
+      "WAIT"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.95,
+    "selected": null,
+    "message": null,
+    "boundary": {
+      "type": "focus_time",
+      "note": "The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.)",
+      "evidence": [
+        "m1",
+        "e1"
+      ]
+    },
+    "reason": "Boundary (focus_time): The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.).",
+    "candidates": [],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 15.4,
+    "cost_usd": 0.15805059999999999,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "21-either-stale-pottery",
+    "expected": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.65,
+    "selected": null,
+    "message": null,
+    "boundary": null,
+    "reason": "No candidate cleared the balanced bar (0.50); best was c1 'Pottery class idea' at 0.35.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "revisit",
+        "topic": "Pottery class idea",
+        "message": "You mentioned a pottery class a few weeks ago. A lot of beginner courses start with hand-building, like pinch pots and coils, before the wheel, so you don't need to be good at anything on day one. Is it still a 'who knows', or has it moved up the list?",
+        "scores": {
+          "relevance": 3,
+          "novelty": 3,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 2,
+          "interruption_cost": 2
+        },
+        "base": 0.35,
+        "score": 0.35,
+        "status": "below_bar",
+        "note": "score 0.35 below the balanced bar 0.50",
+        "chars": 252,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "You mentioned a"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 7,
+    "seconds": 19.6,
+    "cost_usd": 0.1751568,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "22-wait-repeat-after-no-reply",
+    "expected": [
+      "WAIT"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.9,
+    "selected": null,
+    "message": null,
+    "boundary": null,
+    "reason": "No grounded conversation starter was found in the context.",
+    "candidates": [],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.1
+    },
+    "turns": 6,
+    "seconds": 17.1,
+    "cost_usd": 0.158102,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "23-either-vague-sister",
+    "expected": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.75,
+    "selected": "c1",
+    "message": "Your sister's thing was yesterday. How did it go in the end? If you still feel like talking it through, I'm around, and no worries if not.",
+    "boundary": null,
+    "reason": "Picked c1 (follow_up: Sister's thing on Saturday), score 0.75 >= 0.50 in balanced mode. On Thursday the user said they were dreading their sister's event on Saturday and, when offered a chance to talk, said 'Maybe after. Not tonight.' That leaves an open loop, and they invited a follow-up afterwards. It is now Sunday afternoon, the day after, outside quiet hours. The event was stressful, so the m…",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "follow_up",
+        "topic": "Sister's thing on Saturday",
+        "message": "Your sister's thing was yesterday. How did it go in the end? If you still feel like talking it through, I'm around, and no worries if not.",
+        "scores": {
+          "relevance": 5,
+          "novelty": 4,
+          "naturalness": 5,
+          "timing": 5,
+          "engagement": 3,
+          "interruption_cost": 2
+        },
+        "base": 0.75,
+        "score": 0.75,
+        "status": "selected",
+        "note": null,
+        "chars": 138,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Your sister's thing"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 8,
+    "seconds": 18.0,
+    "cost_usd": 0.1741892,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "24-speak-interest-connection",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.86,
+    "selected": "c1",
+    "message": "After Monday's Pasteur lecture, Gus looks a bit like his research subject living on your counter: wild yeast and lactic bacteria keeping each other in check. Has the course gotten to fermentation microbes yet?",
+    "boundary": null,
+    "reason": "Picked c1 (connection: Pasteur and Gus the starter), score 0.86 >= 0.50 in balanced mode. Ties the Pasteur session they found striking to the starter they fed that same night. Saturday morning is their usual baking time.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "connection",
+        "topic": "Pasteur and Gus the starter",
+        "message": "After Monday's Pasteur lecture, Gus looks a bit like his research subject living on your counter: wild yeast and lactic bacteria keeping each other in check. Has the course gotten to fermentation microbes yet?",
+        "scores": {
+          "relevance": 5,
+          "novelty": 5,
+          "naturalness": 4,
+          "timing": 4,
+          "engagement": 4,
+          "interruption_cost": 1
+        },
+        "base": 0.863,
+        "score": 0.863,
+        "status": "selected",
+        "note": null,
+        "chars": 209,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "After Monday's Pasteur"
+      },
+      {
+        "id": "c2",
+        "kind": "idea",
+        "topic": "Pasteur's swan-neck flask experiment",
+        "message": "One Pasteur detail you might like: his swan-neck flasks kept broth sterile just by trapping dust in the curve of the glass, and a few of them reportedly still sit untouched in Paris. Did the course cover that one?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.613,
+        "score": 0.613,
+        "status": "eligible",
+        "note": null,
+        "chars": 213,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "One Pasteur detail"
+      },
+      {
+        "id": "c3",
+        "kind": "casual",
+        "topic": "Weekend bake",
+        "message": "Saturday morning, so I'm guessing Gus is getting put to work. Anything particular coming out of the oven this weekend?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 2,
+          "naturalness": 4,
+          "timing": 4,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.6,
+        "score": 0.6,
+        "status": "eligible",
+        "note": null,
+        "chars": 118,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Saturday morning, so"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 25.6,
+    "cost_usd": 0.1808746,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "25-speak-revisit-debate",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.86,
+    "selected": "c1",
+    "message": "You left the car-ban debate on 'exemptions, obviously' and said you had more arguments. I'm still curious about one: would you price cars out with a steep zone charge, or ban them outright?",
+    "boundary": null,
+    "reason": "Picked c1 (revisit: Car-free city centres debate), score 0.86 >= 0.50 in balanced mode. The user enjoyed this debate, cut it short only to sleep, and asked to continue it sometime. It's a relaxed Wednesday evening, well before quiet hours.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "revisit",
+        "topic": "Car-free city centres debate",
+        "message": "You left the car-ban debate on 'exemptions, obviously' and said you had more arguments. I'm still curious about one: would you price cars out with a steep zone charge, or ban them outright?",
+        "scores": {
+          "relevance": 5,
+          "novelty": 4,
+          "naturalness": 5,
+          "timing": 4,
+          "engagement": 4,
+          "interruption_cost": 1
+        },
+        "base": 0.863,
+        "score": 0.863,
+        "status": "selected",
+        "note": null,
+        "chars": 189,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "You left the"
+      },
+      {
+        "id": "c2",
+        "kind": "idea",
+        "topic": "Barcelona superblocks as a middle path",
+        "message": "Barcelona's superblocks are an interesting test of your hot take. Instead of a full ban, they close the inner streets of a grid of blocks to through traffic, so cars still reach the edges. Would that count as a cop-out in your book?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 4,
+          "timing": 3,
+          "engagement": 4,
+          "interruption_cost": 1
+        },
+        "base": 0.713,
+        "score": 0.713,
+        "status": "eligible",
+        "note": null,
+        "chars": 232,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Barcelona's superblocks are"
+      },
+      {
+        "id": "c3",
+        "kind": "curiosity",
+        "topic": "Tempelhofer Feld development",
+        "message": "A Berlin one for your urban planning side: should Tempelhofer Feld stay entirely open, or would building on its edges be justified given the housing shortage?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.613,
+        "score": 0.613,
+        "status": "eligible",
+        "note": null,
+        "chars": 158,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "A Berlin one"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 4,
+    "seconds": 21.5,
+    "cost_usd": 0.1762078,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "26-speak-casual-lively",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.86,
+    "selected": "c1",
+    "message": "You wanted a new read after The Left Hand of Darkness. If you'd like more Le Guin, The Dispossessed is the natural next one; if you want a change, Ann Leckie's Ancillary Justice plays with gender in a very different way. Want a couple more?",
+    "boundary": null,
+    "reason": "Picked c1 (follow_up: next book after The Left Hand of Darkness), score 0.86 >= 0.40 in lively mode. On 26 Nov the user asked for something new to read and said 'later, too tired' when offered suggestions. A relaxed Sunday afternoon is a good time to pick that back up.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "follow_up",
+        "topic": "next book after The Left Hand of Darkness",
+        "message": "You wanted a new read after The Left Hand of Darkness. If you'd like more Le Guin, The Dispossessed is the natural next one; if you want a change, Ann Leckie's Ancillary Justice plays with gender in a very different way. Want a couple more?",
+        "scores": {
+          "relevance": 5,
+          "novelty": 4,
+          "naturalness": 5,
+          "timing": 4,
+          "engagement": 4,
+          "interruption_cost": 1
+        },
+        "base": 0.863,
+        "score": 0.863,
+        "status": "selected",
+        "note": null,
+        "chars": 240,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "You wanted a"
+      },
+      {
+        "id": "c2",
+        "kind": "casual",
+        "topic": "Miso settling in",
+        "message": "Miso has been with you a week now. Has the sofa become the regular spot, or is under the bed still the backup?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 3,
+          "naturalness": 4,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.613,
+        "score": 0.613,
+        "status": "eligible",
+        "note": null,
+        "chars": 110,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Miso has been"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.4,
+    "mode": "lively",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 7,
+    "seconds": 21.1,
+    "cost_usd": 0.1781154,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "27-either-no-topic-repeat",
+    "expected": [
+      "SPEAK",
+      "WAIT"
+    ],
+    "decision": "SPEAK",
+    "confidence": 0.66,
+    "selected": "c1",
+    "message": "Still mulling over the Harz for spring? If the Brocken feels too busy, the Bode Gorge between Thale and Treseburg is a quieter option, with cliffs and the river right beside you.",
+    "boundary": null,
+    "reason": "Picked c1 (revisit: Harz spring hiking trip), score 0.66 >= 0.50 in balanced mode. The user floated a spring Harz trip five days ago and said they'd think about it. The question was left open, and a concrete quieter alternative gives it a fresh angle without pressure.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "revisit",
+        "topic": "Harz spring hiking trip",
+        "message": "Still mulling over the Harz for spring? If the Brocken feels too busy, the Bode Gorge between Thale and Treseburg is a quieter option, with cliffs and the river right beside you.",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 4,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 1
+        },
+        "base": 0.663,
+        "score": 0.663,
+        "status": "selected",
+        "note": null,
+        "chars": 178,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Still mulling over"
+      },
+      {
+        "id": "c2",
+        "kind": "connection",
+        "topic": "Taking a guitar on hikes",
+        "message": "Fingerstyle and hiking go together better than you'd think: some people carry a small travel guitar and play at the hut in the evening. Would you ever bring one along to the Harz?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 2,
+          "engagement": 3,
+          "interruption_cost": 2
+        },
+        "base": 0.475,
+        "score": 0.475,
+        "status": "below_bar",
+        "note": "score 0.47 below the balanced bar 0.50",
+        "chars": 179,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Fingerstyle and hiking"
+      }
+    ],
+    "generation_failures": [
+      "a candidate contains forbidden/ungrounded/repeated term 'guitar'"
+    ],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 8,
+    "seconds": 22.6,
+    "cost_usd": 0.18198519999999999,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "28-wait-busy-day",
+    "expected": [
+      "WAIT"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.95,
+    "selected": null,
+    "message": null,
+    "boundary": {
+      "type": "focus_time",
+      "note": "User said they are in back-to-back meetings until 6pm today; it is 2pm now, so that busy period is still on.",
+      "evidence": [
+        "m1"
+      ]
+    },
+    "reason": "Boundary (focus_time): User said they are in back-to-back meetings until 6pm today; it is 2pm now, so that busy period is still on.",
+    "candidates": [],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 13.3,
+    "cost_usd": 0.1561432,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "29-wait-grief-no-hobby-chat",
+    "expected": [
+      "WAIT",
+      "SPEAK"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.9,
+    "selected": null,
+    "message": null,
+    "boundary": null,
+    "reason": "No grounded conversation starter was found in the context.",
+    "candidates": [],
+    "generation_failures": [],
+    "decision_failures": [],
+    "warnings": [],
+    "bar": 0.5,
+    "mode": "balanced",
+    "penalty": {
+      "pacing": 0.0,
+      "spacing": 0.0,
+      "backoff": 0.0
+    },
+    "turns": 6,
+    "seconds": 14.9,
+    "cost_usd": 0.1590134,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  {
+    "id": "30-speak-lively-third-message",
+    "expected": [
+      "SPEAK"
+    ],
+    "decision": "WAIT",
+    "confidence": 0.86,
+    "selected": null,
+    "message": null,
+    "boundary": null,
+    "reason": "No candidate cleared the lively bar (0.40); best was c1 'jazz soundtrack for a long cook' at 0.14.",
+    "candidates": [
+      {
+        "id": "c1",
+        "kind": "connection",
+        "topic": "jazz soundtrack for a long cook",
+        "message": "A slow broth wants a slow record. Do you have a jazz album you save for long evenings in the kitchen, or does the cooking get silence?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 2
+        },
+        "base": 0.513,
+        "score": 0.138,
+        "status": "below_bar",
+        "note": "score 0.14 below the lively bar 0.40",
+        "chars": 134,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "A slow broth"
+      },
+      {
+        "id": "c2",
+        "kind": "curiosity",
+        "topic": "winter jazz record",
+        "message": "Some jazz records only feel right once it gets dark at four, like late-night trio albums. Which one in your collection is your winter record?",
+        "scores": {
+          "relevance": 4,
+          "novelty": 4,
+          "naturalness": 3,
+          "timing": 3,
+          "engagement": 3,
+          "interruption_cost": 2
+        },
+        "base": 0.513,
+        "score": 0.138,
+        "status": "below_bar",
+        "note": "score 0.14 below the lively bar 0.40",
+        "chars": 141,
+        "questions": 1,
+        "exclaims": 0,
+        "opening": "Some jazz records"
+      }
+    ],
+    "generation_failures": [],
+    "decision_failures": [
+      "decision WAIT, expected SPEAK"
+    ],
+    "warnings": [],
+    "bar": 0.4,
+    "mode": "lively",
+    "penalty": {
+      "pacing": 0.075,
+      "spacing": 0.3,
+      "backoff": 0.0
+    },
+    "turns": 5,
+    "seconds": 24.7,
+    "cost_usd": 0.19283560000000002,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  }
+]

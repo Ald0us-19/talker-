@@ -1,0 +1,63 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: next book after The Left Hand of Darkness), score 0.86 >= 0.40 in lively mode. On 26 Nov the user asked for something new to read and said 'later, too tired' when offered suggestions. A relaxed Sunday afternoon is a good time to pick that back up.",
+  "message": "You wanted a new read after The Left Hand of Darkness. If you'd like more Le Guin, The Dispossessed is the natural next one; if you want a change, Ann Leckie's Ancillary Justice plays with gender in a very different way. Want a couple more?",
+  "confidence": 0.86,
+  "evidence": [
+    "m3",
+    "m4",
+    "m5",
+    "i1"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "next book after The Left Hand of Darkness",
+      "message": "You wanted a new read after The Left Hand of Darkness. If you'd like more Le Guin, The Dispossessed is the natural next one; if you want a change, Ann Leckie's Ancillary Justice plays with gender in a very different way. Want a couple more?",
+      "rationale": "On 26 Nov the user asked for something new to read and said 'later, too tired' when offered suggestions. A relaxed Sunday afternoon is a good time to pick that back up.",
+      "evidence": [
+        "m3",
+        "m4",
+        "m5",
+        "i1"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 4,
+        "engagement": 4,
+        "interruption_cost": 1
+      },
+      "score": 0.863,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "casual",
+      "topic": "Miso settling in",
+      "message": "Miso has been with you a week now. Has the sofa become the regular spot, or is under the bed still the backup?",
+      "rationale": "Miso was adopted on 21 Nov and moved from under the bed to the sofa on 23 Nov. A light check on how they're settling in fits a week later.",
+      "evidence": [
+        "k1",
+        "m1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 3,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.613,
+      "status": "eligible",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}

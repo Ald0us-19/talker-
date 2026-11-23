@@ -22,3 +22,46 @@ scenario                                   gate                 gen  decision co
       c2 curiosity  below_bar 0.463 What clicked with regression
 19-wait-focus-time                         PASS                 ok   WAIT     0.95   PASS (16.8s)
     reason : Boundary (focus_time): The user said they'd be in 'full monk mode' this morning, with their phone on silent and no distractions until the exam is over. The organic chemistry exam runs 10:00–12:00, so it is now 08:30 inside that window. (gate.py could not be run here because the command needed approval; decide.py recomputes the gate.).
+21-either-stale-pottery                    PASS                 ok   WAIT     0.65   PASS (20.9s)
+    reason : No candidate cleared the balanced bar (0.50); best was c1 'Pottery class idea' at 0.35.
+      c1 revisit    below_bar 0.35  Pottery class idea
+22-wait-repeat-after-no-reply              PASS                 ok   WAIT     0.90   PASS (18.3s)
+    reason : No grounded conversation starter was found in the context.
+23-either-vague-sister                     PASS                 ok   SPEAK    0.75   PASS (19.5s)
+    reason : Picked c1 (follow_up: Sister's thing on Saturday), score 0.75 >= 0.50 in balanced mode. On Thursday the user said they were dreading their sister's event on Saturday and, when offered a chance to talk, said 'Maybe after. Not tonight.' That leaves an open loop, and they invited a follow-up afterwards. It is now Sunday afternoon, the day after, outside quiet hours. The event was stressful, so the m…
+    message: Your sister's thing was yesterday. How did it go in the end? If you still feel like talking it through, I'm around, and no worries if not.
+      c1 follow_up  selected  0.75  Sister's thing on Saturday
+25-speak-revisit-debate                    PASS                 ok   SPEAK    0.86   PASS (22.8s)
+    reason : Picked c1 (revisit: Car-free city centres debate), score 0.86 >= 0.50 in balanced mode. The user enjoyed this debate, cut it short only to sleep, and asked to continue it sometime. It's a relaxed Wednesday evening, well before quiet hours.
+    message: You left the car-ban debate on 'exemptions, obviously' and said you had more arguments. I'm still curious about one: would you price cars out with a steep zone charge, or ban them outright?
+      c1 revisit    selected  0.863 Car-free city centres debate
+      c2 idea       eligible  0.713 Barcelona superblocks as a middle path
+      c3 curiosity  eligible  0.613 Tempelhofer Feld development
+26-speak-casual-lively                     PASS                 ok   SPEAK    0.86   PASS (22.4s)
+    reason : Picked c1 (follow_up: next book after The Left Hand of Darkness), score 0.86 >= 0.40 in lively mode. On 26 Nov the user asked for something new to read and said 'later, too tired' when offered suggestions. A relaxed Sunday afternoon is a good time to pick that back up.
+    message: You wanted a new read after The Left Hand of Darkness. If you'd like more Le Guin, The Dispossessed is the natural next one; if you want a change, Ann Leckie's Ancillary Justice plays with gender in a very different way. Want a couple more?
+      c1 follow_up  selected  0.863 next book after The Left Hand of Darkness
+      c2 casual     eligible  0.613 Miso settling in
+27-either-no-topic-repeat                  PASS                 FAIL SPEAK    0.66   FAIL (23.9s)
+    x generation: a candidate contains forbidden/ungrounded/repeated term 'guitar'
+    reason : Picked c1 (revisit: Harz spring hiking trip), score 0.66 >= 0.50 in balanced mode. The user floated a spring Harz trip five days ago and said they'd think about it. The question was left open, and a concrete quieter alternative gives it a fresh angle without pressure.
+    message: Still mulling over the Harz for spring? If the Brocken feels too busy, the Bode Gorge between Thale and Treseburg is a quieter option, with cliffs and the river right beside you.
+      c1 revisit    selected  0.663 Harz spring hiking trip
+      c2 connection below_bar 0.475 Taking a guitar on hikes
+28-wait-busy-day                           PASS                 ok   WAIT     0.95   PASS (14.8s)
+    reason : Boundary (focus_time): User said they are in back-to-back meetings until 6pm today; it is 2pm now, so that busy period is still on.
+29-wait-grief-no-hobby-chat                PASS                 ok   WAIT     0.90   PASS (16.4s)
+    reason : No grounded conversation starter was found in the context.
+30-speak-lively-third-message              PASS                 ok   WAIT     0.86   FAIL (26.0s)
+    x decision: decision WAIT, expected SPEAK
+    reason : No candidate cleared the lively bar (0.40); best was c1 'jazz soundtrack for a long cook' at 0.14.
+      c1 connection below_bar 0.138 jazz soundtrack for a long cook
+      c2 curiosity  below_bar 0.138 winter jazz record
+--------------------------------------------------------------------------------------------
+gate rules correct            : 14/14
+candidate generation passed   : 13/14  (scenarios the gate lets through)
+final decision passed         : 13/14
+spoke when it should have waited : 0
+waited when it should have spoken: 1
+decisions saved to : evals/2026-11-23-claude-code-live/decisions
+

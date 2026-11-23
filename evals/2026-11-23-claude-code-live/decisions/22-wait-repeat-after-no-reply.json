@@ -1,0 +1,11 @@
+{
+  "decision": "WAIT",
+  "reason": "No grounded conversation starter was found in the context.",
+  "message": null,
+  "confidence": 0.9,
+  "evidence": [],
+  "selected": null,
+  "boundary": null,
+  "candidates": [],
+  "preference_update": null
+}

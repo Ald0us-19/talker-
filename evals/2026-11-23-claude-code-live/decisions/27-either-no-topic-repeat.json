@@ -1,0 +1,64 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (revisit: Harz spring hiking trip), score 0.66 >= 0.50 in balanced mode. The user floated a spring Harz trip five days ago and said they'd think about it. The question was left open, and a concrete quieter alternative gives it a fresh angle without pressure.",
+  "message": "Still mulling over the Harz for spring? If the Brocken feels too busy, the Bode Gorge between Thale and Treseburg is a quieter option, with cliffs and the river right beside you.",
+  "confidence": 0.66,
+  "evidence": [
+    "m1",
+    "m2",
+    "m3",
+    "i2"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "revisit",
+      "topic": "Harz spring hiking trip",
+      "message": "Still mulling over the Harz for spring? If the Brocken feels too busy, the Bode Gorge between Thale and Treseburg is a quieter option, with cliffs and the river right beside you.",
+      "rationale": "The user floated a spring Harz trip five days ago and said they'd think about it. The question was left open, and a concrete quieter alternative gives it a fresh angle without pressure.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3",
+        "i2"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 4,
+        "timing": 3,
+        "engagement": 3,
+        "interruption_cost": 1
+      },
+      "score": 0.663,
+      "status": "selected",
+      "note": null
+    },
+    {
+      "id": "c2",
+      "kind": "connection",
+      "topic": "Taking a guitar on hikes",
+      "message": "Fingerstyle and hiking go together better than you'd think: some people carry a small travel guitar and play at the hut in the evening. Would you ever bring one along to the Harz?",
+      "rationale": "Links two of the user's interests, fingerstyle guitar and hiking, through the trip they're planning. It avoids repeating yesterday's practice-progress question.",
+      "evidence": [
+        "i1",
+        "i2",
+        "m1"
+      ],
+      "scores": {
+        "relevance": 4,
+        "novelty": 4,
+        "naturalness": 3,
+        "timing": 2,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.475,
+      "status": "below_bar",
+      "note": "score 0.47 below the balanced bar 0.50"
+    }
+  ],
+  "preference_update": null
+}

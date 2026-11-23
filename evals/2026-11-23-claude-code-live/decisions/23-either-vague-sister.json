@@ -1,0 +1,39 @@
+{
+  "decision": "SPEAK",
+  "reason": "Picked c1 (follow_up: Sister's thing on Saturday), score 0.75 >= 0.50 in balanced mode. On Thursday the user said they were dreading their sister's event on Saturday and, when offered a chance to talk, said 'Maybe after. Not tonight.' That leaves an open loop, and they invited a follow-up afterwards. It is now Sunday afternoon, the day after, outside quiet hours. The event was stressful, so the m…",
+  "message": "Your sister's thing was yesterday. How did it go in the end? If you still feel like talking it through, I'm around, and no worries if not.",
+  "confidence": 0.75,
+  "evidence": [
+    "m1",
+    "m2",
+    "m3"
+  ],
+  "selected": "c1",
+  "boundary": null,
+  "candidates": [
+    {
+      "id": "c1",
+      "kind": "follow_up",
+      "topic": "Sister's thing on Saturday",
+      "message": "Your sister's thing was yesterday. How did it go in the end? If you still feel like talking it through, I'm around, and no worries if not.",
+      "rationale": "On Thursday the user said they were dreading their sister's event on Saturday and, when offered a chance to talk, said 'Maybe after. Not tonight.' That leaves an open loop, and they invited a follow-up afterwards. It is now Sunday afternoon, the day after, outside quiet hours. The event was stressful, so the message stays gentle, vague and easy to ignore. No other topics, because cheerful chatter wouldn't fit right now.",
+      "evidence": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "scores": {
+        "relevance": 5,
+        "novelty": 4,
+        "naturalness": 5,
+        "timing": 5,
+        "engagement": 3,
+        "interruption_cost": 2
+      },
+      "score": 0.75,
+      "status": "selected",
+      "note": null
+    }
+  ],
+  "preference_update": null
+}
